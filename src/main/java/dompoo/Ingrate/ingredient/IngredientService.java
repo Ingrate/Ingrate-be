@@ -1,6 +1,7 @@
 package dompoo.Ingrate.ingredient;
 
 import dompoo.Ingrate.ingredient.dto.IngredientAddRequest;
+import dompoo.Ingrate.ingredient.dto.IngredientFindResponse;
 import dompoo.Ingrate.member.Member;
 import dompoo.Ingrate.member.MemberRepository;
 import jakarta.transaction.Transactional;
@@ -8,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @Transactional
@@ -33,5 +35,12 @@ public class IngredientService {
         ingredient.setMember(member);
         member.addPost(1);
         member.addPoint(1);
+    }
+
+    public List<IngredientFindResponse> getMyIngredient(Long memberId) {
+        return ingredientRepository.findAll().stream()
+                .filter(ingredient -> ingredient.getMember().getId().equals(memberId))
+                .map(IngredientFindResponse::new)
+                .toList();
     }
 }
