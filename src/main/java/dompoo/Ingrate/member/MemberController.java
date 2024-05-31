@@ -45,4 +45,9 @@ public class MemberController {
     public List<MemberResponse> getAllMember() {
         return memberService.getAllMember();
     }
+
+    @GetMapping("/manage/member/{memberId}")
+    public MemberAdminDetailResponse getMemberDetail(Long memberId) {
+        return memberService.getMemberDetail(memberId);
+    }
 }

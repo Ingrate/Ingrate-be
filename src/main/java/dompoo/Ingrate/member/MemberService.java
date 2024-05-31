@@ -77,4 +77,11 @@ public class MemberService {
                 .map(MemberResponse::new)
                 .toList();
     }
+
+    public MemberAdminDetailResponse getMemberDetail(Long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+
+        return new MemberAdminDetailResponse(member);
+    }
 }
