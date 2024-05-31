@@ -4,6 +4,8 @@ import dompoo.Ingrate.member.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 public class MemberController {
@@ -38,4 +40,9 @@ public class MemberController {
     }
 
     //어드민 기능
+    //TODO: 어드민만 접근 가능하도록 수정
+    @GetMapping("/manage/member")
+    public List<MemberResponse> getAllMember() {
+        return memberService.getAllMember();
+    }
 }

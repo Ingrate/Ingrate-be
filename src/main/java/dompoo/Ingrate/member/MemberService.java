@@ -5,6 +5,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -68,5 +70,11 @@ public class MemberService {
 
         memberRepository.delete(member);
         return new WithdrawalResponse(true);
+    }
+
+    public List<MemberResponse> getAllMember() {
+        return memberRepository.findAll().stream()
+                .map(MemberResponse::new)
+                .toList();
     }
 }
