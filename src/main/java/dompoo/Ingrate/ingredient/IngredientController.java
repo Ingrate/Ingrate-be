@@ -41,6 +41,7 @@ public class IngredientController {
     }
 
     //어드민 기능
+    //TODO: 어드민만 접근 가능하도록 수정
     @GetMapping("/manage/ingredient")
     public List<IngredientResponse> getAllIngredient() {
         return ingredientService.getAllIngredient();
@@ -54,5 +55,10 @@ public class IngredientController {
     @PutMapping("/manage/ingredient/{ingredientId}")
     public IngredientAdminDetailResponse editIngredient(@PathVariable Long ingredientId, IngredientEditRequest request) {
         return ingredientService.editIngredient(ingredientId, request);
+    }
+
+    @DeleteMapping("/manage/ingredient/{ingredientId}")
+    public void deleteIngredient(@PathVariable Long ingredientId) {
+        ingredientService.deleteIngredient(ingredientId);
     }
 }

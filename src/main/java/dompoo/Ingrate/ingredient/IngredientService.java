@@ -122,4 +122,11 @@ public class IngredientService {
 
         return new IngredientAdminDetailResponse(ingredient);
     }
+
+    public void deleteIngredient(Long ingredientId) {
+        Ingredient ingredient = ingredientRepository.findById(ingredientId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 식재료입니다."));
+
+        ingredientRepository.delete(ingredient);
+    }
 }
