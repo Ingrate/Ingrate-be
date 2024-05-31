@@ -2,10 +2,7 @@ package dompoo.Ingrate.member;
 
 import dompoo.Ingrate.ingredient.Ingredient;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,10 +23,11 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<Ingredient> ingredients = new ArrayList<>();
 
-    public Member(String username, String password, Integer posts) {
+    @Builder
+    public Member(String username, String password) {
         this.username = username;
         this.password = password;
-        this.posts = posts;
+        this.posts = 0;
     }
 
     public void addPost(Integer num) {

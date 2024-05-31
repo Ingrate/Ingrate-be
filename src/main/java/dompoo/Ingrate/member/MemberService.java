@@ -10,4 +10,13 @@ import org.springframework.stereotype.Service;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+
+    public SignUpResponse signUp(SignUpRequest signUpRequest) {
+        Member member = memberRepository.save(Member.builder()
+                .username(signUpRequest.getUsername())
+                .password(signUpRequest.getPassword()) //TODO : 비밀번호 암호화
+                .build());
+
+        return new SignUpResponse(member);
+    }
 }
