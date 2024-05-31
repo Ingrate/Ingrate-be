@@ -38,5 +38,10 @@ public class IngredientController {
         return ingredientService.editMyIngredient(memberId, ingredientId, request);
     }
 
+    @DeleteMapping("/ingredient/{ingredientId}")
+    public void deleteMyIngredient(Long memberId, @PathVariable Long ingredientId) {
+        ingredientService.deleteMyIngredient(memberId, ingredientId);
+    }
+
     //어드민 기능
 }
