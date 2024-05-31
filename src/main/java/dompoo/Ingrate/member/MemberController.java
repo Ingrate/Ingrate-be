@@ -50,4 +50,9 @@ public class MemberController {
     public MemberAdminDetailResponse getMemberDetail(Long memberId) {
         return memberService.getMemberDetail(memberId);
     }
+
+    @DeleteMapping("/manage/member/{memberId}")
+    public void deleteMember(Long memberId) {
+        memberService.deleteMember(memberId);
+    }
 }
