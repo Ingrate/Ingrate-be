@@ -16,12 +16,12 @@ public class IngredientController {
 
     //회원 기능
     @GetMapping("/ingredient/rate")
-    public IngredientRateResponse rateIngredient(IngredientRateRequest request) {
+    public IngredientRateResponse rateIngredient(@RequestBody IngredientRateRequest request) {
         return ingredientService.rateIngredient(request);
     }
 
     @PostMapping("/ingredient")
-    public void addIngredient(Long memberId, IngredientAddRequest request) {
+    public void addIngredient(Long memberId, @RequestBody IngredientAddRequest request) {
         ingredientService.addIngredient(memberId, request);
     }
 
@@ -36,7 +36,7 @@ public class IngredientController {
     }
 
     @PutMapping("/ingredient/{ingredientId}")
-    public IngredientDetailResponse editMyIngredient(Long memberId, @PathVariable Long ingredientId, IngredientEditRequest request) {
+    public IngredientDetailResponse editMyIngredient(Long memberId, @PathVariable Long ingredientId, @RequestBody IngredientEditRequest request) {
         return ingredientService.editMyIngredient(memberId, ingredientId, request);
     }
 
@@ -58,7 +58,7 @@ public class IngredientController {
     }
 
     @PutMapping("/manage/ingredient/{ingredientId}")
-    public IngredientAdminDetailResponse editIngredient(@PathVariable Long ingredientId, IngredientEditRequest request) {
+    public IngredientAdminDetailResponse editIngredient(@PathVariable Long ingredientId, @RequestBody IngredientEditRequest request) {
         return ingredientService.editIngredient(ingredientId, request);
     }
 

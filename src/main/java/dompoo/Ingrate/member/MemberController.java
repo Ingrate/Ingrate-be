@@ -14,7 +14,7 @@ public class MemberController {
 
     //비회원 기능
     @PostMapping("/auth/signup")
-    public SignUpResponse signUp(SignUpRequest signUpRequest) {
+    public SignUpResponse signUp(@RequestBody SignUpRequest signUpRequest) {
         return memberService.signUp(signUpRequest);
     }
 
@@ -25,17 +25,17 @@ public class MemberController {
     }
 
     @PostMapping("/member")
-    public PasswordCheckResponse checkMyPassword(Long memberId, PasswordCheckRequest request) {
+    public PasswordCheckResponse checkMyPassword(Long memberId, @RequestBody PasswordCheckRequest request) {
         return memberService.checkMyPassword(memberId, request);
     }
 
     @PutMapping("/member")
-    public MemberDetailResponse changeMyPassword(Long memberId, PasswordChangeRequest request) {
+    public MemberDetailResponse changeMyPassword(Long memberId, @RequestBody PasswordChangeRequest request) {
         return memberService.changeMyPassword(memberId, request);
     }
 
     @DeleteMapping("/member")
-    public WithdrawalResponse withdrawal(Long memberId, PasswordCheckRequest request) {
+    public WithdrawalResponse withdrawal(Long memberId, @RequestBody PasswordCheckRequest request) {
         return memberService.withdrawal(memberId, request);
     }
 
@@ -47,12 +47,12 @@ public class MemberController {
     }
 
     @GetMapping("/manage/member/{memberId}")
-    public MemberAdminDetailResponse getMemberDetail(Long memberId) {
+    public MemberAdminDetailResponse getMemberDetail(@PathVariable Long memberId) {
         return memberService.getMemberDetail(memberId);
     }
 
     @DeleteMapping("/manage/member/{memberId}")
-    public void deleteMember(Long memberId) {
+    public void deleteMember(@PathVariable Long memberId) {
         memberService.deleteMember(memberId);
     }
 }
