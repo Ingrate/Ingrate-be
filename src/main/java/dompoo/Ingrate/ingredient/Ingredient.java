@@ -1,6 +1,7 @@
 package dompoo.Ingrate.ingredient;
 
 import dompoo.Ingrate.config.enums.Unit;
+import dompoo.Ingrate.member.Member;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,7 +22,9 @@ public class Ingredient {
     private String memo;
     private LocalDate date;
 
-    //TODO : member와 연관관계 필요
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     public Ingredient(String name, Float cost, Unit unit, String memo, LocalDate date) {
         this.name = name;
@@ -29,5 +32,11 @@ public class Ingredient {
         this.unit = unit;
         this.memo = memo;
         this.date = date;
+    }
+
+    public void setMember(Member member) {
+        this.member = member;
+        member.getIngredients().add(this);
+        member.addPost(1);
     }
 }
