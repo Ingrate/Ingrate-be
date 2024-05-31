@@ -15,7 +15,7 @@ public class IngredientAddRequest {
     private String name;
     private Float cost;
     private Float amount;
-    private Unit unit;
+    private String unit;
     private String memo;
     private LocalDate date;
 }

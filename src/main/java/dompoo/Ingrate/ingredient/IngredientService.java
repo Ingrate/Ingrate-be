@@ -1,5 +1,6 @@
 package dompoo.Ingrate.ingredient;
 
+import dompoo.Ingrate.config.enums.Unit;
 import dompoo.Ingrate.ingredient.dto.IngredientAddRequest;
 import dompoo.Ingrate.ingredient.dto.IngredientFindResponse;
 import dompoo.Ingrate.member.Member;
@@ -27,7 +28,7 @@ public class IngredientService {
                 .name(request.getName())
                 .cost(request.getCost())
                 .amount(request.getAmount())
-                .unit(request.getUnit())
+                .unit(Unit.valueOf(request.getUnit()))
                 .memo(request.getMemo())
                 .date(LocalDate.now())
                 .build());

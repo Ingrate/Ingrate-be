@@ -14,12 +14,12 @@ public class IngredientFindResponse {
     private final String name;
     private final Float cost;
     private final Float amount;
-    private final Unit unit;
+    private final String unit;
 
     public IngredientFindResponse(Ingredient ingredient) {
         this.name = ingredient.getName();
         this.cost = ingredient.getCost();
         this.amount = ingredient.getAmount();
-        this.unit = ingredient.getUnit();
+        this.unit = ingredient.getUnit().getName();
     }
 }
