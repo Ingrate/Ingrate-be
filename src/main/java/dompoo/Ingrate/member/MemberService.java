@@ -1,5 +1,6 @@
 package dompoo.Ingrate.member;
 
+import dompoo.Ingrate.member.dto.MemberDetailResponse;
 import dompoo.Ingrate.member.dto.SignUpRequest;
 import dompoo.Ingrate.member.dto.SignUpResponse;
 import jakarta.transaction.Transactional;
@@ -20,5 +21,12 @@ public class MemberService {
                 .build());
 
         return new SignUpResponse(member);
+    }
+
+    public MemberDetailResponse getMyInfo(Long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+
+        return new MemberDetailResponse(member);
     }
 }

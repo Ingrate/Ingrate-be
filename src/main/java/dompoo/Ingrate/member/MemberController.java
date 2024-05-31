@@ -1,8 +1,10 @@
 package dompoo.Ingrate.member;
 
+import dompoo.Ingrate.member.dto.MemberDetailResponse;
 import dompoo.Ingrate.member.dto.SignUpRequest;
 import dompoo.Ingrate.member.dto.SignUpResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,6 +21,10 @@ public class MemberController {
     }
 
     //회원 기능
+    @GetMapping("/member")
+    public MemberDetailResponse getMyInfo(Long memberId) {
+        return memberService.getMyInfo(memberId);
+    }
 
     //어드민 기능
 }
