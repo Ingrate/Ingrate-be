@@ -56,4 +56,17 @@ public class MemberService {
 
         return new MemberDetailResponse(member);
     }
+
+    public WithdrawalResponse withdrawal(Long memberId, PasswordCheckRequest request) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+
+        //TODO: passwordEncoder를 사용하여 비밀번호 확인
+        if (!member.getPassword().equals(request.getPassword())) {
+            return new WithdrawalResponse(false);
+        }
+
+        memberRepository.delete(member);
+        return new WithdrawalResponse(true);
+    }
 }

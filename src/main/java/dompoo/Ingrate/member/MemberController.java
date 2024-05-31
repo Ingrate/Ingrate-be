@@ -2,10 +2,7 @@ package dompoo.Ingrate.member;
 
 import dompoo.Ingrate.member.dto.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,6 +30,11 @@ public class MemberController {
     @PutMapping("/member")
     public MemberDetailResponse changeMyPassword(Long memberId, PasswordChangeRequest request) {
         return memberService.changeMyPassword(memberId, request);
+    }
+
+    @DeleteMapping("/member")
+    public WithdrawalResponse withdrawal(Long memberId, PasswordCheckRequest request) {
+        return memberService.withdrawal(memberId, request);
     }
 
     //어드민 기능
