@@ -2,12 +2,10 @@ package dompoo.Ingrate.ingredient;
 
 import dompoo.Ingrate.ingredient.dto.IngredientAddRequest;
 import dompoo.Ingrate.ingredient.dto.IngredientDetailResponse;
+import dompoo.Ingrate.ingredient.dto.IngredientEditRequest;
 import dompoo.Ingrate.ingredient.dto.IngredientResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -33,6 +31,11 @@ public class IngredientController {
     @GetMapping("/ingredient/{ingredientId}")
     public IngredientDetailResponse getMyIngredient(Long memberId, @PathVariable Long ingredientId) {
         return ingredientService.getMyIngredientDetail(memberId, ingredientId);
+    }
+
+    @PutMapping("/ingredient/{ingredientId}")
+    public IngredientDetailResponse fixMyIngredient(Long memberId, @PathVariable Long ingredientId, IngredientEditRequest request) {
+        return ingredientService.editMyIngredient(memberId, ingredientId, request);
     }
 
     //어드민 기능

@@ -3,6 +3,7 @@ package dompoo.Ingrate.ingredient;
 import dompoo.Ingrate.config.enums.Unit;
 import dompoo.Ingrate.ingredient.dto.IngredientAddRequest;
 import dompoo.Ingrate.ingredient.dto.IngredientDetailResponse;
+import dompoo.Ingrate.ingredient.dto.IngredientEditRequest;
 import dompoo.Ingrate.ingredient.dto.IngredientResponse;
 import dompoo.Ingrate.member.Member;
 import dompoo.Ingrate.member.MemberRepository;
@@ -53,6 +54,23 @@ public class IngredientService {
         if (!ingredient.getMember().getId().equals(memberId)) {
             throw new IllegalArgumentException("본인의 식재료가 아닙니다.");
         }
+
+        return new IngredientDetailResponse(ingredient);
+    }
+
+    public IngredientDetailResponse editMyIngredient(Long memberId, Long ingredientId, IngredientEditRequest request) {
+        Ingredient ingredient = ingredientRepository.findById(ingredientId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 식재료입니다."));
+
+        if (!ingredient.getMember().getId().equals(memberId)) {
+            throw new IllegalArgumentException("본인의 식재료가 아닙니다.");
+        }
+
+        ingredient.setName(request.getName());
+        ingredient.setCost(request.getCost());
+        ingredient.setAmount(request.getAmount());
+        ingredient.setUnit(Unit.valueOf(request.getUnit()));
+        ingredient.setMemo(request.getMemo());
 
         return new IngredientDetailResponse(ingredient);
     }
