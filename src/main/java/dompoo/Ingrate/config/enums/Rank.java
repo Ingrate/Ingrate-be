@@ -4,7 +4,7 @@ import lombok.Getter;
 
 public class Rank {
 
-    public String getRank(Integer posts, Integer point) {
+    public static String getRank(Integer posts, Integer point) {
         int check = posts + point;
 
         if (check < 10) {
@@ -42,7 +42,7 @@ public class Rank {
         }
 
         public static Rank2 getRandom() {
-            return Rank2.values()[(int) (Math.random() * Rank1.values().length)];
+            return Rank2.values()[(int) (Math.random() * Rank2.values().length)];
         }
     }
 
@@ -57,7 +57,7 @@ public class Rank {
         }
 
         public static Rank3 getRandom() {
-            return Rank3.values()[(int) (Math.random() * Rank1.values().length)];
+            return Rank3.values()[(int) (Math.random() * Rank3.values().length)];
         }
     }
 }
