@@ -19,6 +19,7 @@ public class Member {
     private String username;
     private String password;
     private Integer posts;
+    private Integer point;
 
     @OneToMany(mappedBy = "member")
     private List<Ingredient> ingredients = new ArrayList<>();
@@ -28,9 +29,14 @@ public class Member {
         this.username = username;
         this.password = password;
         this.posts = 0;
+        this.point = 5;
     }
 
     public void addPost(Integer num) {
         this.posts += num;
+    }
+
+    public void addPoint(Integer num) {
+        this.point += num;
     }
 }

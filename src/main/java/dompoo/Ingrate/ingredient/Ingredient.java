@@ -18,6 +18,7 @@ public class Ingredient {
     private Long id;
     private String name;
     private Float cost;
+    private Float amount;
     private Unit unit;
     private String memo;
     private LocalDate date;
@@ -26,9 +27,11 @@ public class Ingredient {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    public Ingredient(String name, Float cost, Unit unit, String memo, LocalDate date) {
+    @Builder
+    public Ingredient(String name, Float cost, Float amount, Unit unit, String memo, LocalDate date) {
         this.name = name;
         this.cost = cost;
+        this.amount = amount;
         this.unit = unit;
         this.memo = memo;
         this.date = date;
