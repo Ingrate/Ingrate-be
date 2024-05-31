@@ -1,11 +1,10 @@
 package dompoo.Ingrate.member;
 
-import dompoo.Ingrate.member.dto.MemberDetailResponse;
-import dompoo.Ingrate.member.dto.SignUpRequest;
-import dompoo.Ingrate.member.dto.SignUpResponse;
+import dompoo.Ingrate.member.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -24,6 +23,16 @@ public class MemberController {
     @GetMapping("/member")
     public MemberDetailResponse getMyInfo(Long memberId) {
         return memberService.getMyInfo(memberId);
+    }
+
+    @PostMapping("/member")
+    public PasswordCheckResponse checkMyPassword(Long memberId, PasswordCheckRequest request) {
+        return memberService.checkMyPassword(memberId, request);
+    }
+
+    @PutMapping("/member")
+    public MemberDetailResponse changeMyPassword(Long memberId, PasswordChangeRequest request) {
+        return memberService.changeMyPassword(memberId, request);
     }
 
     //어드민 기능
