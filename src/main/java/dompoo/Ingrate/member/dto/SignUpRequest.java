@@ -1,4 +1,4 @@
-package dompoo.Ingrate.member;
+package dompoo.Ingrate.member.dto;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

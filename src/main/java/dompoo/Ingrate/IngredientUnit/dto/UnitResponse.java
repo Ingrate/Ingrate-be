@@ -1,4 +1,4 @@
-package dompoo.Ingrate.IngredientUnit;
+package dompoo.Ingrate.IngredientUnit.dto;
 
 import lombok.*;
 

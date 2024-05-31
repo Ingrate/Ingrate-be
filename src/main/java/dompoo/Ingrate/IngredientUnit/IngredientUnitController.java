@@ -1,5 +1,6 @@
 package dompoo.Ingrate.IngredientUnit;
 
+import dompoo.Ingrate.IngredientUnit.dto.UnitResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

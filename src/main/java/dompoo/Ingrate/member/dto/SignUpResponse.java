@@ -1,5 +1,6 @@
-package dompoo.Ingrate.member;
+package dompoo.Ingrate.member.dto;
 
+import dompoo.Ingrate.member.Member;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;

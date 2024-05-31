@@ -1,5 +1,7 @@
 package dompoo.Ingrate.member;
 
+import dompoo.Ingrate.member.dto.SignUpRequest;
+import dompoo.Ingrate.member.dto.SignUpResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

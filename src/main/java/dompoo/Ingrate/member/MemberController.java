@@ -1,5 +1,7 @@
 package dompoo.Ingrate.member;
 
+import dompoo.Ingrate.member.dto.SignUpRequest;
+import dompoo.Ingrate.member.dto.SignUpResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
