@@ -9,5 +9,5 @@ import lombok.Setter;
 @RequiredArgsConstructor
 public class PasswordCheckRequest {
 
-    private final String password;
+    private String password;
 }

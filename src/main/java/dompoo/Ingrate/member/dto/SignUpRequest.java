@@ -9,7 +9,7 @@ import lombok.Setter;
 @RequiredArgsConstructor
 public class SignUpRequest {
 
-    private final String username;
-    private final String password;
-    private final String passwordCheck;
+    private String username;
+    private String password;
+    private String passwordCheck;
 }
