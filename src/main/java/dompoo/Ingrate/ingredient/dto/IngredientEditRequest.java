@@ -12,8 +12,7 @@ import lombok.Setter;
 @RequiredArgsConstructor
 public class IngredientEditRequest {
 
-    @NotNull(message = "식재료명을 입력해주세요.")
-    @NotEmpty(message = "식재료명은 비어있을 수 없습니다.")
+    @NotEmpty(message = "식재료명을 입력해주세요.")
     private String name;
 
     @NotNull(message = "가격을 입력해주세요.")
@@ -24,8 +23,7 @@ public class IngredientEditRequest {
     @Positive(message = "양은 0보다 커야합니다.")
     private Float amount;
 
-    @NotNull(message = "단위를 입력해주세요.")
-    @NotEmpty(message = "단위는 비어있을 수 없습니다.")
+    @NotEmpty(message = "단위를 입력해주세요.")
     private String unit;
 
     private String memo;
