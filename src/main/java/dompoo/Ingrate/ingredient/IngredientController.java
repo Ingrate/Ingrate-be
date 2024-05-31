@@ -15,6 +15,11 @@ public class IngredientController {
     //비회원 기능
 
     //회원 기능
+    @GetMapping("/ingredient/rate")
+    public IngredientRateResponse rateIngredient(IngredientRateRequest request) {
+        return ingredientService.rateIngredient(request);
+    }
+
     @PostMapping("/ingredient")
     public void addIngredient(Long memberId, IngredientAddRequest request) {
         ingredientService.addIngredient(memberId, request);
