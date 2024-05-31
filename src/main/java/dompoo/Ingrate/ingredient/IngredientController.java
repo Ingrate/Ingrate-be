@@ -1,7 +1,7 @@
 package dompoo.Ingrate.ingredient;
 
 import dompoo.Ingrate.ingredient.dto.IngredientAddRequest;
-import dompoo.Ingrate.ingredient.dto.IngredientFindResponse;
+import dompoo.Ingrate.ingredient.dto.IngredientResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +24,7 @@ public class IngredientController {
     }
 
     @GetMapping("/ingredient")
-    public List<IngredientFindResponse> getMyIngredient(Long memberId) {
+    public List<IngredientResponse> getMyIngredient(Long memberId) {
         return ingredientService.getMyIngredient(memberId);
     }
 

@@ -2,7 +2,7 @@ package dompoo.Ingrate.ingredient;
 
 import dompoo.Ingrate.config.enums.Unit;
 import dompoo.Ingrate.ingredient.dto.IngredientAddRequest;
-import dompoo.Ingrate.ingredient.dto.IngredientFindResponse;
+import dompoo.Ingrate.ingredient.dto.IngredientResponse;
 import dompoo.Ingrate.member.Member;
 import dompoo.Ingrate.member.MemberRepository;
 import jakarta.transaction.Transactional;
@@ -38,10 +38,10 @@ public class IngredientService {
         member.addPoint(1);
     }
 
-    public List<IngredientFindResponse> getMyIngredient(Long memberId) {
+    public List<IngredientResponse> getMyIngredient(Long memberId) {
         return ingredientRepository.findAll().stream()
                 .filter(ingredient -> ingredient.getMember().getId().equals(memberId))
-                .map(IngredientFindResponse::new)
+                .map(IngredientResponse::new)
                 .toList();
     }
 }
