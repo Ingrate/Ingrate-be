@@ -1,9 +1,6 @@
 package dompoo.Ingrate.ingredient;
 
-import dompoo.Ingrate.ingredient.dto.IngredientAddRequest;
-import dompoo.Ingrate.ingredient.dto.IngredientDetailResponse;
-import dompoo.Ingrate.ingredient.dto.IngredientEditRequest;
-import dompoo.Ingrate.ingredient.dto.IngredientResponse;
+import dompoo.Ingrate.ingredient.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,12 +47,12 @@ public class IngredientController {
     }
 
     @GetMapping("/manage/ingredient/{ingredientId}")
-    public IngredientDetailResponse getIngredientDetail(@PathVariable Long ingredientId) {
+    public IngredientAdminDetailResponse getIngredientDetail(@PathVariable Long ingredientId) {
         return ingredientService.getIngredientDetail(ingredientId);
     }
 
     @PutMapping("/manage/ingredient/{ingredientId}")
-    public IngredientDetailResponse editIngredient(@PathVariable Long ingredientId, IngredientEditRequest request) {
+    public IngredientAdminDetailResponse editIngredient(@PathVariable Long ingredientId, IngredientEditRequest request) {
         return ingredientService.editIngredient(ingredientId, request);
     }
 }

@@ -2,10 +2,7 @@ package dompoo.Ingrate.ingredient;
 
 import dompoo.Ingrate.IngredientUnit.IngredientUnitService;
 import dompoo.Ingrate.config.enums.Unit;
-import dompoo.Ingrate.ingredient.dto.IngredientAddRequest;
-import dompoo.Ingrate.ingredient.dto.IngredientDetailResponse;
-import dompoo.Ingrate.ingredient.dto.IngredientEditRequest;
-import dompoo.Ingrate.ingredient.dto.IngredientResponse;
+import dompoo.Ingrate.ingredient.dto.*;
 import dompoo.Ingrate.member.Member;
 import dompoo.Ingrate.member.MemberRepository;
 import jakarta.transaction.Transactional;
@@ -102,14 +99,14 @@ public class IngredientService {
                 .toList();
     }
 
-    public IngredientDetailResponse getIngredientDetail(Long ingredientId) {
+    public IngredientAdminDetailResponse getIngredientDetail(Long ingredientId) {
         Ingredient ingredient = ingredientRepository.findById(ingredientId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 식재료입니다."));
 
-        return new IngredientDetailResponse(ingredient);
+        return new IngredientAdminDetailResponse(ingredient);
     }
 
-    public IngredientDetailResponse editIngredient(Long ingredientId, IngredientEditRequest request) {
+    public IngredientAdminDetailResponse editIngredient(Long ingredientId, IngredientEditRequest request) {
         Ingredient ingredient = ingredientRepository.findById(ingredientId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 식재료입니다."));
 
@@ -123,6 +120,6 @@ public class IngredientService {
         ingredient.setUnit(Unit.valueOf(request.getUnit()));
         ingredient.setMemo(request.getMemo());
 
-        return new IngredientDetailResponse(ingredient);
+        return new IngredientAdminDetailResponse(ingredient);
     }
 }
