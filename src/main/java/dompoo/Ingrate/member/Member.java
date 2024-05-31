@@ -1,11 +1,14 @@
 package dompoo.Ingrate.member;
 
+import dompoo.Ingrate.config.enums.Role;
 import dompoo.Ingrate.ingredient.Ingredient;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static dompoo.Ingrate.config.enums.Role.MEMBER;
 
 @Entity
 @Getter
@@ -20,6 +23,7 @@ public class Member {
     private String password;
     private Integer posts;
     private Integer point;
+    private Role role;
 
     @OneToMany(mappedBy = "member")
     private List<Ingredient> ingredients = new ArrayList<>();
@@ -30,6 +34,7 @@ public class Member {
         this.password = password;
         this.posts = 0;
         this.point = 5;
+        this.role = MEMBER;
     }
 
     public void addPost(Integer num) {
