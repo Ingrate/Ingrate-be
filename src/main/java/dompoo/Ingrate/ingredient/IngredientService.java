@@ -2,6 +2,7 @@ package dompoo.Ingrate.ingredient;
 
 import dompoo.Ingrate.config.enums.Unit;
 import dompoo.Ingrate.ingredient.dto.IngredientAddRequest;
+import dompoo.Ingrate.ingredient.dto.IngredientDetailResponse;
 import dompoo.Ingrate.ingredient.dto.IngredientResponse;
 import dompoo.Ingrate.member.Member;
 import dompoo.Ingrate.member.MemberRepository;
@@ -43,5 +44,16 @@ public class IngredientService {
                 .filter(ingredient -> ingredient.getMember().getId().equals(memberId))
                 .map(IngredientResponse::new)
                 .toList();
+    }
+
+    public IngredientDetailResponse getMyIngredientDetail(Long memberId, Long ingredientId) {
+        Ingredient ingredient = ingredientRepository.findById(ingredientId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 식재료입니다."));
+
+        if (!ingredient.getMember().getId().equals(memberId)) {
+            throw new IllegalArgumentException("본인의 식재료가 아닙니다.");
+        }
+
+        return new IngredientDetailResponse(ingredient);
     }
 }
