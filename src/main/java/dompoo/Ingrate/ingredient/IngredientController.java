@@ -44,4 +44,13 @@ public class IngredientController {
     }
 
     //어드민 기능
+    @GetMapping("/manage/ingredient")
+    public List<IngredientResponse> getAllIngredient() {
+        return ingredientService.getAllIngredient();
+    }
+
+    @GetMapping("/manage/ingredient/{ingredientId}")
+    public IngredientDetailResponse getIngredientDetail(@PathVariable Long ingredientId) {
+        return ingredientService.getIngredientDetail(ingredientId);
+    }
 }

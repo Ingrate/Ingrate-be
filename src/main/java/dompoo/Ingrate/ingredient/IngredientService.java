@@ -95,4 +95,17 @@ public class IngredientService {
 
         ingredientRepository.delete(ingredient);
     }
+
+    public List<IngredientResponse> getAllIngredient() {
+        return ingredientRepository.findAll().stream()
+                .map(IngredientResponse::new)
+                .toList();
+    }
+
+    public IngredientDetailResponse getIngredientDetail(Long ingredientId) {
+        Ingredient ingredient = ingredientRepository.findById(ingredientId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 식재료입니다."));
+
+        return new IngredientDetailResponse(ingredient);
+    }
 }
