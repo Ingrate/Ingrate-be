@@ -1,5 +1,6 @@
 package dompoo.Ingrate.ingredient;
 
+import dompoo.Ingrate.IngredientUnit.IngredientUnitService;
 import dompoo.Ingrate.config.enums.Unit;
 import dompoo.Ingrate.ingredient.dto.IngredientAddRequest;
 import dompoo.Ingrate.ingredient.dto.IngredientDetailResponse;
@@ -21,10 +22,15 @@ public class IngredientService {
 
     private final IngredientRepository ingredientRepository;
     private final MemberRepository memberRepository;
+    private final IngredientUnitService unitService;
 
     public void addIngredient(Long memberId, IngredientAddRequest request) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+
+        if (!unitService.unitExistCheck(request.getUnit(), Unit.valueOf(request.getUnit()))) {
+            throw new IllegalArgumentException("존재하지 않는 단위입니다.");
+        }
 
         Ingredient ingredient = ingredientRepository.save(Ingredient.builder()
                 .name(request.getName())
@@ -64,6 +70,10 @@ public class IngredientService {
 
         if (!ingredient.getMember().getId().equals(memberId)) {
             throw new IllegalArgumentException("본인의 식재료가 아닙니다.");
+        }
+
+        if (!unitService.unitExistCheck(request.getUnit(), Unit.valueOf(request.getUnit()))) {
+            throw new IllegalArgumentException("존재하지 않는 단위입니다.");
         }
 
         ingredient.setName(request.getName());
