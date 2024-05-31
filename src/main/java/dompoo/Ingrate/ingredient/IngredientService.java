@@ -108,4 +108,21 @@ public class IngredientService {
 
         return new IngredientDetailResponse(ingredient);
     }
+
+    public IngredientDetailResponse editIngredient(Long ingredientId, IngredientEditRequest request) {
+        Ingredient ingredient = ingredientRepository.findById(ingredientId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 식재료입니다."));
+
+        if (!unitService.unitExistCheck(request.getUnit(), Unit.valueOf(request.getUnit()))) {
+            throw new IllegalArgumentException("존재하지 않는 단위입니다.");
+        }
+
+        ingredient.setName(request.getName());
+        ingredient.setCost(request.getCost());
+        ingredient.setAmount(request.getAmount());
+        ingredient.setUnit(Unit.valueOf(request.getUnit()));
+        ingredient.setMemo(request.getMemo());
+
+        return new IngredientDetailResponse(ingredient);
+    }
 }
