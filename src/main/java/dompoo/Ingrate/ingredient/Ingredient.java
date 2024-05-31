@@ -1,5 +1,6 @@
 package dompoo.Ingrate.ingredient;
 
+import dompoo.Ingrate.config.enums.Unit;
 import jakarta.persistence.*;
 import lombok.*;
 

@@ -1,6 +1,6 @@
 package dompoo.Ingrate.IngredientUnit;
 
-import dompoo.Ingrate.ingredient.Unit;
+import dompoo.Ingrate.config.enums.Unit;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
