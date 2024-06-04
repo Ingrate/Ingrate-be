@@ -1,10 +1,7 @@
 package dompoo.Ingrate.IngredientUnit.dto;
 
 import jakarta.validation.constraints.NotEmpty;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
@@ -15,4 +12,10 @@ public class UnitAddRequest {
     private String name;
     @NotEmpty(message = "단위명을 입력해주세요.")
     private String unit;
+
+    @Builder
+    public UnitAddRequest(String name, String unit) {
+        this.name = name;
+        this.unit = unit;
+    }
 }
