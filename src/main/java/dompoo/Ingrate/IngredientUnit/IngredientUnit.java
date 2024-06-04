@@ -5,10 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Getter
@@ -21,4 +18,10 @@ public class IngredientUnit {
     private Long id;
     private String name;
     private Unit unit;
+
+    @Builder
+    public IngredientUnit(Long id, String name, Unit unit) {
+        this.name = name;
+        this.unit = unit;
+    }
 }
