@@ -23,14 +23,14 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<ErrorResponse> handlerException(MyException e, HttpServletRequest request) {
 
         ErrorResponse response = ErrorResponse.builder()
-                .code(e.statusCode())
+                .code(e.getCode())
                 .message(e.getMessage())
                 .build();
 
         log.error("[비즈니스 오류{}] {}]", response.getCode(), response.getMessage());
 
         return ResponseEntity
-                .status(Integer.parseInt(e.statusCode()))
+                .status(Integer.parseInt(e.getCode()))
                 .body(response);
 
     }

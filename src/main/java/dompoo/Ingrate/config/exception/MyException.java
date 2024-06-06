@@ -13,5 +13,5 @@ public abstract class MyException extends RuntimeException {
         super(message, cause);
     }
 
-    public abstract String statusCode();
+    public abstract String getCode();
 }
