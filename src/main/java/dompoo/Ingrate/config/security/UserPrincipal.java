@@ -1,4 +1,4 @@
-package dompoo.Ingrate.config;
+package dompoo.Ingrate.config.security;
 
 import dompoo.Ingrate.member.Member;
 import lombok.Getter;

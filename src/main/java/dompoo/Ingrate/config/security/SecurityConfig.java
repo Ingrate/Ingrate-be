@@ -1,4 +1,4 @@
-package dompoo.Ingrate.config;
+package dompoo.Ingrate.config.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dompoo.Ingrate.member.Member;
