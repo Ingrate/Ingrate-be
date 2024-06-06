@@ -3,6 +3,7 @@ package dompoo.Ingrate.ingredient.dto;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -27,4 +28,13 @@ public class IngredientEditRequest {
     private String unit;
 
     private String memo;
+
+    @Builder
+    public IngredientEditRequest(String name, Float cost, Float amount, String unit, String memo) {
+        this.name = name;
+        this.cost = cost;
+        this.amount = amount;
+        this.unit = unit;
+        this.memo = memo;
+    }
 }

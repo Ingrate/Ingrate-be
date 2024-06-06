@@ -58,9 +58,9 @@ public class IngredientService {
                 .unit(Unit.valueOf(request.getUnit()))
                 .memo(request.getMemo())
                 .date(LocalDate.now())
+                .member(member)
                 .build());
 
-        ingredient.setMember(member);
         member.addPost(1);
         member.addPoint(1);
     }
