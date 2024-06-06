@@ -48,7 +48,7 @@ public class MemberService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
 
-        if (encoder.matches(request.getOldPassword(), member.getPassword())) {
+        if (!encoder.matches(request.getOldPassword(), member.getPassword())) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
 
@@ -65,7 +65,7 @@ public class MemberService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
 
-        if (encoder.matches(request.getPassword(), member.getPassword())) {
+        if (!encoder.matches(request.getPassword(), member.getPassword())) {
             return new WithdrawalResponse(false);
         }
 
