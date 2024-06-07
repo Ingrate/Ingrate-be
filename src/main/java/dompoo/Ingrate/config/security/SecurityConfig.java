@@ -1,6 +1,7 @@
 package dompoo.Ingrate.config.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dompoo.Ingrate.config.security.handler.*;
 import dompoo.Ingrate.member.Member;
 import dompoo.Ingrate.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -45,13 +46,13 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .headers(headers -> headers.addHeaderWriter(new XFrameOptionsHeaderWriter(SAMEORIGIN)))
                 .addFilterAt(jsonUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-//                .exceptionHandling(e -> e TODO: 예외 핸들러 작성
-//                        .accessDeniedHandler(new Http403Handler(objectMapper))
-//                        .authenticationEntryPoint(new Http401Handler(objectMapper)))
+                .exceptionHandling(e -> e
+                        .accessDeniedHandler(new Http403Handler(objectMapper))
+                        .authenticationEntryPoint(new Http401Handler(objectMapper)))
                 .logout(logout -> logout
                         .logoutUrl("/auth/logout")
                         .deleteCookies("SESSION")
-//                        .logoutSuccessHandler(new LogoutSuccessHandler()) TODO: 로그아웃 성공 핸들러 작성
+                        .logoutSuccessHandler(new LogoutSuccessHandler(objectMapper))
                 )
                 .build();
     }
@@ -61,7 +62,7 @@ public class SecurityConfig {
         JsonUsernamePasswordAuthenticationFilter filter = new JsonUsernamePasswordAuthenticationFilter(objectMapper);
         filter.setAuthenticationManager(authenticationManager());
         filter.setFilterProcessesUrl("/auth/login");
-        //filter.setAuthenticationFailureHandler(new LoginFailHandler(objectMapper)); TODO: 로그인 실패 핸들러 작성
+        filter.setAuthenticationFailureHandler(new LoginFailHandler(objectMapper));
         filter.setAuthenticationSuccessHandler(new LoginSuccessHandler(objectMapper));
         filter.setSecurityContextRepository(new HttpSessionSecurityContextRepository());
 
