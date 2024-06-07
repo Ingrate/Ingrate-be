@@ -1,5 +1,9 @@
 package dompoo.Ingrate.member;
 
+import dompoo.Ingrate.exception.AlreadyExistUsername;
+import dompoo.Ingrate.exception.MemberNotFound;
+import dompoo.Ingrate.exception.PasswordICheckIncorrect;
+import dompoo.Ingrate.exception.PasswordIncorrect;
 import dompoo.Ingrate.member.dto.*;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.AfterEach;
@@ -12,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
 @Transactional
@@ -46,6 +51,43 @@ class MemberServiceTest {
     }
 
     @Test
+    @DisplayName("이미 존재하는 닉네임으로 회원가입")
+    void signUpFail1() {
+        //given
+        repository.save(Member.builder()
+                .username("창근")
+                .password(encoder.encode("1234"))
+                .build());
+
+        SignUpRequest request = SignUpRequest.builder()
+                .username("창근")
+                .password("1234")
+                .passwordCheck("1234")
+                .build();
+
+        //expected
+        assertThatThrownBy(() ->
+                service.signUp(request))
+                .isInstanceOf(AlreadyExistUsername.class);
+    }
+
+    @Test
+    @DisplayName("패스워드 확인 일치하지 않는 회원가입")
+    void signUpFail2() {
+        //given
+        SignUpRequest request = SignUpRequest.builder()
+                .username("창근")
+                .password("1234")
+                .passwordCheck("5678")
+                .build();
+
+        //expected
+        assertThatThrownBy(() ->
+                service.signUp(request))
+                .isInstanceOf(PasswordICheckIncorrect.class);
+    }
+
+    @Test
     @DisplayName("내 정보 보기")
     void getMyInfo() {
         //given
@@ -61,6 +103,21 @@ class MemberServiceTest {
         assertThat(response.getUsername()).isEqualTo("창근");
         assertThat(response.getPosts()).isEqualTo(0);
         assertThat(response.getPoint()).isEqualTo(5);
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 회원 정보 보기")
+    void getMyInfoFail1() {
+        //given
+        Member me = repository.save(Member.builder()
+                .username("창근")
+                .password("1234")
+                .build());
+
+        //expected
+        assertThatThrownBy(() ->
+                service.getMyInfo(me.getId() + 1))
+                .isInstanceOf(MemberNotFound.class);
     }
 
     @Test
@@ -104,6 +161,24 @@ class MemberServiceTest {
     }
 
     @Test
+    @DisplayName("존재하지 않는 회원의 비밀번호 확인")
+    void checkPasswordFail1() {
+        Member me = repository.save(Member.builder()
+                .username("창근")
+                .password(encoder.encode("1234"))
+                .build());
+
+        PasswordCheckRequest request = PasswordCheckRequest.builder()
+                .password("5678")
+                .build();
+
+        //expected
+        assertThatThrownBy(() ->
+                service.checkMyPassword(me.getId() + 1, request))
+                .isInstanceOf(MemberNotFound.class);
+    }
+
+    @Test
     @DisplayName("비밀번호 변경")
     void changePassword() {
         //given
@@ -128,6 +203,66 @@ class MemberServiceTest {
     }
 
     @Test
+    @DisplayName("존재하지 않는 회원의 비밀번호 변경")
+    void changPasswordFail1() {
+        Member me = repository.save(Member.builder()
+                .username("창근")
+                .password(encoder.encode("1234"))
+                .build());
+
+        PasswordChangeRequest request = PasswordChangeRequest.builder()
+                .oldPassword("1234")
+                .newPassword("5678")
+                .newPasswordCheck("5678")
+                .build();
+
+        //expected
+        assertThatThrownBy(() ->
+                service.changeMyPassword(me.getId() + 1, request))
+                .isInstanceOf(MemberNotFound.class);
+    }
+
+    @Test
+    @DisplayName("패스워드 틀린 비밀번호 변경")
+    void changePasswordFail2() {
+        Member me = repository.save(Member.builder()
+                .username("창근")
+                .password(encoder.encode("1234"))
+                .build());
+
+        PasswordChangeRequest request = PasswordChangeRequest.builder()
+                .oldPassword("qwer")
+                .newPassword("5678")
+                .newPasswordCheck("5678")
+                .build();
+
+        //expected
+        assertThatThrownBy(() ->
+                service.changeMyPassword(me.getId(), request))
+                .isInstanceOf(PasswordIncorrect.class);
+    }
+
+    @Test
+    @DisplayName("패스워드 확인 틀린 비밀번호 변경")
+    void changePasswordFail3() {
+        Member me = repository.save(Member.builder()
+                .username("창근")
+                .password(encoder.encode("1234"))
+                .build());
+
+        PasswordChangeRequest request = PasswordChangeRequest.builder()
+                .oldPassword("1234")
+                .newPassword("5678")
+                .newPasswordCheck("qwer")
+                .build();
+
+        //expected
+        assertThatThrownBy(() ->
+                service.changeMyPassword(me.getId(), request))
+                .isInstanceOf(PasswordICheckIncorrect.class);
+    }
+
+    @Test
     @DisplayName("회원탈퇴")
     void withDrwal() {
         //given
@@ -145,6 +280,24 @@ class MemberServiceTest {
 
         //then
         assertThat(response.getWithdrawalSuccess()).isTrue();
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 회원의 회원탈퇴")
+    void withDrawalFail1() {
+        Member me = repository.save(Member.builder()
+                .username("창근")
+                .password(encoder.encode("1234"))
+                .build());
+
+        PasswordCheckRequest request = PasswordCheckRequest.builder()
+                .password("1234")
+                .build();
+
+        //expected
+        assertThatThrownBy(() ->
+                service.withdrawal(me.getId() + 1, request))
+                .isInstanceOf(MemberNotFound.class);
     }
 
     @Test
@@ -192,6 +345,21 @@ class MemberServiceTest {
     }
 
     @Test
+    @DisplayName("관리자 - 존재하지 않는 회원의 회원상세")
+    void getDetailFail1() {
+        //given
+        Member other = repository.save(Member.builder()
+                .username("창근")
+                .password(encoder.encode("1234"))
+                .build());
+
+        //expected
+        assertThatThrownBy(() ->
+                service.getMemberDetail(other.getId() + 1))
+                .isInstanceOf(MemberNotFound.class);
+    }
+
+    @Test
     @DisplayName("관리자 - 회원삭제")
     void delete() {
         //given
@@ -205,5 +373,20 @@ class MemberServiceTest {
 
         //then
         assertThat(repository.findAll()).isEmpty();
+    }
+
+    @Test
+    @DisplayName("관리자 - 존재하지 않는 회원의 회원삭제")
+    void deleteFail1() {
+        //given
+        Member other = repository.save(Member.builder()
+                .username("창근")
+                .password(encoder.encode("1234"))
+                .build());
+
+        //expected
+        assertThatThrownBy(() ->
+                service.deleteMember(other.getId() + 1))
+                .isInstanceOf(MemberNotFound.class);
     }
 }
