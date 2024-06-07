@@ -18,15 +18,17 @@ import java.nio.charset.StandardCharsets;
 @RequiredArgsConstructor
 public class LoginFailHandler implements AuthenticationFailureHandler {
 
+    private static final String MESSAGE = "[인증오류] 아이디 또는 비밀번호가 일치하지 않습니다.";
+
     private final ObjectMapper objectMapper;
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-        log.error("[인증오류] 아이디 또는 비밀번호가 일치하지 않습니다.");
+        log.error(MESSAGE);
 
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .code("400")
-                .message("[인증오류] 아이디 또는 비밀번호가 일치하지 않습니다.")
+                .message(MESSAGE)
                 .build();
 
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
