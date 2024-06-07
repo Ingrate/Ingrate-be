@@ -2,6 +2,10 @@ package dompoo.Ingrate.ingredient;
 
 import dompoo.Ingrate.IngredientUnit.IngredientUnit;
 import dompoo.Ingrate.IngredientUnit.IngredientUnitRepository;
+import dompoo.Ingrate.exception.IngredientNotFound;
+import dompoo.Ingrate.exception.MemberNotFound;
+import dompoo.Ingrate.exception.NotMyIngredient;
+import dompoo.Ingrate.exception.UnitNotFound;
 import dompoo.Ingrate.ingredient.dto.*;
 import dompoo.Ingrate.member.Member;
 import dompoo.Ingrate.member.MemberRepository;
@@ -19,6 +23,7 @@ import java.util.List;
 import static dompoo.Ingrate.config.enums.Unit.DAN;
 import static dompoo.Ingrate.config.enums.Unit.GRAM;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
 @Transactional
@@ -82,6 +87,42 @@ class IngredientServiceTest {
         assertThat(ingredient.getUnit()).isEqualTo(DAN);
         assertThat(ingredient.getMemo()).isEqualTo("GS더프레시");
         assertThat(ingredient.getMember().getId()).isEqualTo(me.getId());
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 회원의 식재료 추가 실패")
+    void addOneFail1() {
+        //given
+        IngredientAddRequest request = IngredientAddRequest.builder()
+                .name("파")
+                .cost(1200F)
+                .amount(1F)
+                .unit("DAN")
+                .memo("GS더프레시")
+                .build();
+
+        //expected
+        assertThatThrownBy(() ->
+                service.addIngredient(other.getId() + 1, request))
+                .isExactlyInstanceOf(MemberNotFound.class);
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 단위로 식재료 추가 실패")
+    void addOneFail2() {
+        //given
+        IngredientAddRequest request = IngredientAddRequest.builder()
+                .name("파")
+                .cost(1200F)
+                .amount(1F)
+                .unit("MILILITER")
+                .memo("GS더프레시")
+                .build();
+
+        //expected
+        assertThatThrownBy(() ->
+                service.addIngredient(me.getId(), request))
+                .isExactlyInstanceOf(UnitNotFound.class);
     }
 
     @Test
@@ -159,6 +200,45 @@ class IngredientServiceTest {
     }
 
     @Test
+    @DisplayName("존재하지 않는 식재료 상세 검색 실패")
+    void getMyDetailFail1() {
+        //given
+        Ingredient in1 = repository.save(Ingredient.builder()
+                .name("파")
+                .cost(1200F)
+                .amount(1F)
+                .unit(DAN)
+                .memo("GS더프레시")
+                .date(LocalDate.now())
+                .member(me)
+                .build());
+
+        //when
+        assertThatThrownBy(() ->
+                service.getMyIngredientDetail(me.getId(), in1.getId() + 1))
+                .isExactlyInstanceOf(IngredientNotFound.class);
+    }
+
+    @Test
+    @DisplayName("다른 회원의 식재료 상세 검색 실패")
+    void getMyDetailFail2() {
+        Ingredient in1 = repository.save(Ingredient.builder()
+                .name("파")
+                .cost(1200F)
+                .amount(1F)
+                .unit(DAN)
+                .memo("GS더프레시")
+                .date(LocalDate.now())
+                .member(other)
+                .build());
+
+        //when
+        assertThatThrownBy(() ->
+                service.getMyIngredientDetail(me.getId(), in1.getId()))
+                .isExactlyInstanceOf(NotMyIngredient.class);
+    }
+
+    @Test
     @DisplayName("내 식재료 수정")
     void editMy() {
         //given
@@ -198,6 +278,88 @@ class IngredientServiceTest {
     }
 
     @Test
+    @DisplayName("존재하지 않는 식재료 수정 실패")
+    void editMyFail1() {
+        //given
+        Ingredient in1 = repository.save(Ingredient.builder()
+                .name("파")
+                .cost(1200F)
+                .amount(1F)
+                .unit(DAN)
+                .memo("GS더프레시")
+                .date(LocalDate.now())
+                .member(me)
+                .build());
+
+        IngredientEditRequest request = IngredientEditRequest.builder()
+                .name("파")
+                .cost(1300F)
+                .amount(300F)
+                .unit("GRAM")
+                .memo("쿠팡")
+                .build();
+
+        //expected
+        assertThatThrownBy(() ->
+                service.editMyIngredient(me.getId(), in1.getId() + 1, request))
+                .isExactlyInstanceOf(IngredientNotFound.class);
+    }
+
+    @Test
+    @DisplayName("다른 회원의 식재료 수정 실패")
+    void editMyFail2() {
+        Ingredient in1 = repository.save(Ingredient.builder()
+                .name("파")
+                .cost(1200F)
+                .amount(1F)
+                .unit(DAN)
+                .memo("GS더프레시")
+                .date(LocalDate.now())
+                .member(other)
+                .build());
+
+        IngredientEditRequest request = IngredientEditRequest.builder()
+                .name("파")
+                .cost(1300F)
+                .amount(300F)
+                .unit("GRAM")
+                .memo("쿠팡")
+                .build();
+
+        //expected
+        assertThatThrownBy(() ->
+                service.editMyIngredient(me.getId(), in1.getId(), request))
+                .isExactlyInstanceOf(NotMyIngredient.class);
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 식재료 단위로 수정 실패")
+    void editMyFail3() {
+        Ingredient in1 = repository.save(Ingredient.builder()
+                .name("파")
+                .cost(1200F)
+                .amount(1F)
+                .unit(DAN)
+                .memo("GS더프레시")
+                .date(LocalDate.now())
+                .member(me)
+                .build());
+
+        IngredientEditRequest request = IngredientEditRequest.builder()
+                .name("파")
+                .cost(1300F)
+                .amount(300F)
+                .unit("MILILITER")
+                .memo("쿠팡")
+                .build();
+
+        //expected
+        assertThatThrownBy(() ->
+                service.editMyIngredient(me.getId(), in1.getId(), request))
+                .isExactlyInstanceOf(UnitNotFound.class);
+    }
+
+    @Test
     @DisplayName("내 식재료 삭제")
     void deleteMy() {
         //given
@@ -216,6 +378,46 @@ class IngredientServiceTest {
 
         //then
         assertThat(repository.findAll()).isEmpty();
+    }
+
+    @Test
+    @DisplayName("내 존재하지 않는 식재료 삭제 실패")
+    void deleteMyFail1() {
+        //given
+        Ingredient in1 = repository.save(Ingredient.builder()
+                .name("파")
+                .cost(1200F)
+                .amount(1F)
+                .unit(DAN)
+                .memo("GS더프레시")
+                .date(LocalDate.now())
+                .member(me)
+                .build());
+
+        //expected
+        assertThatThrownBy(() ->
+                service.deleteMyIngredient(me.getId(), in1.getId() + 1))
+                .isExactlyInstanceOf(IngredientNotFound.class);
+    }
+
+    @Test
+    @DisplayName("다른 회원의 식재료 삭제 실패")
+    void deleteMyFail2() {
+        //given
+        Ingredient in1 = repository.save(Ingredient.builder()
+                .name("파")
+                .cost(1200F)
+                .amount(1F)
+                .unit(DAN)
+                .memo("GS더프레시")
+                .date(LocalDate.now())
+                .member(other)
+                .build());
+
+        //expected
+        assertThatThrownBy(() ->
+                service.deleteMyIngredient(me.getId(), in1.getId()))
+                .isExactlyInstanceOf(NotMyIngredient.class);
     }
 
     @Test
@@ -299,6 +501,26 @@ class IngredientServiceTest {
     }
 
     @Test
+    @DisplayName("관리자 - 존재하지 않는 식재료 상세 검색 실패")
+    void getOneFail() {
+        //given
+        Ingredient in1 = repository.save(Ingredient.builder()
+                .name("파")
+                .cost(1200F)
+                .amount(1F)
+                .unit(DAN)
+                .memo("GS더프레시")
+                .date(LocalDate.now())
+                .member(other)
+                .build());
+
+        //expected
+        assertThatThrownBy(() ->
+                service.getIngredientDetail(in1.getId() + 1))
+                .isExactlyInstanceOf(IngredientNotFound.class);
+    }
+
+    @Test
     @DisplayName("관리자 - 식재료 수정")
     void edit() {
         //given
@@ -340,6 +562,62 @@ class IngredientServiceTest {
     }
 
     @Test
+    @DisplayName("관리자 - 존재하지 않는 식재료 수정 실패")
+    void editFail1() {
+        //given
+        Ingredient in1 = repository.save(Ingredient.builder()
+                .name("파")
+                .cost(1200F)
+                .amount(1F)
+                .unit(DAN)
+                .memo("GS더프레시")
+                .date(LocalDate.now())
+                .member(other)
+                .build());
+
+        IngredientEditRequest request = IngredientEditRequest.builder()
+                .name("파")
+                .cost(1300F)
+                .amount(300F)
+                .unit("GRAM")
+                .memo("쿠팡")
+                .build();
+
+        //expected
+        assertThatThrownBy(() ->
+                service.editIngredient(in1.getId() + 1, request))
+                .isExactlyInstanceOf(IngredientNotFound.class);
+
+    }
+
+    @Test
+    @DisplayName("관리자 - 존재하지 않는 식재료 단위로 수정 실패")
+    void editFail2() {
+        Ingredient in1 = repository.save(Ingredient.builder()
+                .name("파")
+                .cost(1200F)
+                .amount(1F)
+                .unit(DAN)
+                .memo("GS더프레시")
+                .date(LocalDate.now())
+                .member(other)
+                .build());
+
+        IngredientEditRequest request = IngredientEditRequest.builder()
+                .name("파")
+                .cost(1300F)
+                .amount(300F)
+                .unit("MILILITER")
+                .memo("쿠팡")
+                .build();
+
+        //expected
+        assertThatThrownBy(() ->
+                service.editIngredient(in1.getId(), request))
+                .isExactlyInstanceOf(UnitNotFound.class);
+    }
+
+    @Test
     @DisplayName("관리자 - 식재료 삭제")
     void delete() {
         //given
@@ -358,6 +636,26 @@ class IngredientServiceTest {
 
         //then
         assertThat(repository.findAll()).isEmpty();
+    }
+
+    @Test
+    @DisplayName("관리자 - 존재하지 않는 식재료 삭제 실패")
+    void deleteFail1() {
+        //given
+        Ingredient in1 = repository.save(Ingredient.builder()
+                .name("파")
+                .cost(1200F)
+                .amount(1F)
+                .unit(DAN)
+                .memo("GS더프레시")
+                .date(LocalDate.now())
+                .member(other)
+                .build());
+
+        //expected
+        assertThatThrownBy(() ->
+                service.deleteIngredient(in1.getId() + 1))
+                .isExactlyInstanceOf(IngredientNotFound.class);
     }
 
 
