@@ -2,6 +2,7 @@ package dompoo.Ingrate.config.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dompoo.Ingrate.config.security.handler.*;
+import dompoo.Ingrate.exception.UsernameNotFoundException;
 import dompoo.Ingrate.member.Member;
 import dompoo.Ingrate.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +15,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -88,7 +88,7 @@ public class SecurityConfig {
     public UserDetailsService userDetailsService(MemberRepository memberRepository) {
         return username -> {
             Member member = memberRepository.findByUsername(username)
-                    .orElseThrow(() -> new UsernameNotFoundException(username + "을 찾을 수 없습니다."));
+                    .orElseThrow(() -> new UsernameNotFoundException(username));
 
             return new UserPrincipal(member);
         };
