@@ -1,5 +1,6 @@
 package dompoo.Ingrate.member;
 
+import dompoo.Ingrate.exception.AlreadyExistUsername;
 import dompoo.Ingrate.exception.MemberNotFound;
 import dompoo.Ingrate.exception.PasswordICheckIncorrect;
 import dompoo.Ingrate.exception.PasswordIncorrect;
@@ -20,6 +21,10 @@ public class MemberService {
     private final PasswordEncoder encoder;
 
     public SignUpResponse signUp(SignUpRequest signUpRequest) {
+        if (memberRepository.existsByUsername(signUpRequest.getUsername())) {
+            throw new AlreadyExistUsername();
+        }
+
         Member member = memberRepository.save(Member.builder()
                 .username(signUpRequest.getUsername())
                 .password(encoder.encode(signUpRequest.getPassword()))
