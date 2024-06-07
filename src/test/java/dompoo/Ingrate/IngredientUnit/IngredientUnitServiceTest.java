@@ -2,6 +2,7 @@ package dompoo.Ingrate.IngredientUnit;
 
 import dompoo.Ingrate.IngredientUnit.dto.UnitAddRequest;
 import dompoo.Ingrate.IngredientUnit.dto.UnitResponse;
+import dompoo.Ingrate.exception.AlreadyExistUnit;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
@@ -14,6 +15,7 @@ import java.util.List;
 import static dompoo.Ingrate.config.enums.Unit.DAN;
 import static dompoo.Ingrate.config.enums.Unit.GRAM;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
 @Transactional
@@ -120,5 +122,25 @@ class IngredientUnitServiceTest {
         //then
         assertThat(response.getName()).isEqualTo("파");
         assertThat(response.getUnit()).isEqualTo("단");
+    }
+
+    @Test
+    @DisplayName("이미 존재하는 식재료-단위 추가")
+    void addFail() {
+        //given
+        repository.save(IngredientUnit.builder()
+                .name("파")
+                .unit(DAN)
+                .build());
+
+        UnitAddRequest request = UnitAddRequest.builder()
+                .name("파")
+                .unit("DAN")
+                .build();
+
+        //expected
+        assertThatThrownBy(() ->
+                service.addUnit(request))
+                .isExactlyInstanceOf(AlreadyExistUnit.class);
     }
 }
