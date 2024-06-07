@@ -1,5 +1,8 @@
 package dompoo.Ingrate.member;
 
+import dompoo.Ingrate.exception.MemberNotFound;
+import dompoo.Ingrate.exception.PasswordICheckIncorrect;
+import dompoo.Ingrate.exception.PasswordIncorrect;
 import dompoo.Ingrate.member.dto.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -27,14 +30,14 @@ public class MemberService {
 
     public MemberDetailResponse getMyInfo(Long memberId) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+                .orElseThrow(MemberNotFound::new);
 
         return new MemberDetailResponse(member);
     }
 
     public PasswordCheckResponse checkMyPassword(Long memberId, PasswordCheckRequest request) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+                .orElseThrow(MemberNotFound::new);
 
         if (encoder.matches(request.getPassword(), member.getPassword())) {
             return new PasswordCheckResponse(true);
@@ -46,14 +49,14 @@ public class MemberService {
 
     public MemberDetailResponse changeMyPassword(Long memberId, PasswordChangeRequest request) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+                .orElseThrow(MemberNotFound::new);
 
         if (!encoder.matches(request.getOldPassword(), member.getPassword())) {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+            throw new PasswordIncorrect();
         }
 
         if (!request.getNewPassword().equals(request.getNewPasswordCheck())) {
-            throw new IllegalArgumentException("비밀번호 확인이 일치하지 않습니다.");
+            throw new PasswordICheckIncorrect();
         }
 
         member.setPassword(encoder.encode(request.getNewPassword()));
@@ -63,7 +66,7 @@ public class MemberService {
 
     public WithdrawalResponse withdrawal(Long memberId, PasswordCheckRequest request) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+                .orElseThrow(MemberNotFound::new);
 
         if (!encoder.matches(request.getPassword(), member.getPassword())) {
             return new WithdrawalResponse(false);
@@ -81,14 +84,14 @@ public class MemberService {
 
     public MemberAdminDetailResponse getMemberDetail(Long memberId) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+                .orElseThrow(MemberNotFound::new);
 
         return new MemberAdminDetailResponse(member);
     }
 
     public void deleteMember(Long memberId) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+                .orElseThrow(MemberNotFound::new);
 
         memberRepository.delete(member);
     }
