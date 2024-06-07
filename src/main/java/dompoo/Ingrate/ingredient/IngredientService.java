@@ -2,6 +2,10 @@ package dompoo.Ingrate.ingredient;
 
 import dompoo.Ingrate.IngredientUnit.IngredientUnitService;
 import dompoo.Ingrate.config.enums.Unit;
+import dompoo.Ingrate.exception.IngredientNotFound;
+import dompoo.Ingrate.exception.MemberNotFound;
+import dompoo.Ingrate.exception.NotMyIngredient;
+import dompoo.Ingrate.exception.UnitNotFound;
 import dompoo.Ingrate.ingredient.dto.*;
 import dompoo.Ingrate.member.Member;
 import dompoo.Ingrate.member.MemberRepository;
@@ -23,7 +27,7 @@ public class IngredientService {
 
     public IngredientRateResponse rateIngredient(IngredientRateRequest request) {
         if (!unitService.unitExistCheck(request.getName(), Unit.valueOf(request.getUnit()))) {
-            throw new IllegalArgumentException("존재하지 않는 단위입니다.");
+            throw new UnitNotFound();
         }
 
         // 종류와 단위가 같은 식재료들 (모집단)
@@ -45,10 +49,10 @@ public class IngredientService {
 
     public void addIngredient(Long memberId, IngredientAddRequest request) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+                .orElseThrow(MemberNotFound::new);
 
         if (!unitService.unitExistCheck(request.getName(), Unit.valueOf(request.getUnit()))) {
-            throw new IllegalArgumentException("존재하지 않는 단위입니다.");
+            throw new UnitNotFound();
         }
 
         Ingredient ingredient = ingredientRepository.save(Ingredient.builder()
@@ -74,10 +78,10 @@ public class IngredientService {
 
     public IngredientDetailResponse getMyIngredientDetail(Long memberId, Long ingredientId) {
         Ingredient ingredient = ingredientRepository.findById(ingredientId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 식재료입니다."));
+                .orElseThrow(IngredientNotFound::new);
 
         if (!ingredient.getMember().getId().equals(memberId)) {
-            throw new IllegalArgumentException("본인의 식재료가 아닙니다.");
+            throw new NotMyIngredient();
         }
 
         return new IngredientDetailResponse(ingredient);
@@ -85,14 +89,14 @@ public class IngredientService {
 
     public IngredientDetailResponse editMyIngredient(Long memberId, Long ingredientId, IngredientEditRequest request) {
         Ingredient ingredient = ingredientRepository.findById(ingredientId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 식재료입니다."));
+                .orElseThrow(IngredientNotFound::new);
 
         if (!ingredient.getMember().getId().equals(memberId)) {
-            throw new IllegalArgumentException("본인의 식재료가 아닙니다.");
+            throw new NotMyIngredient();
         }
 
         if (!unitService.unitExistCheck(request.getName(), Unit.valueOf(request.getUnit()))) {
-            throw new IllegalArgumentException("존재하지 않는 단위입니다.");
+            throw new UnitNotFound();
         }
 
         ingredient.setName(request.getName());
@@ -106,10 +110,10 @@ public class IngredientService {
 
     public void deleteMyIngredient(Long memberId, Long ingredientId) {
         Ingredient ingredient = ingredientRepository.findById(ingredientId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 식재료입니다."));
+                .orElseThrow(IngredientNotFound::new);
 
         if (!ingredient.getMember().getId().equals(memberId)) {
-            throw new IllegalArgumentException("본인의 식재료가 아닙니다.");
+            throw new NotMyIngredient();
         }
 
         ingredientRepository.delete(ingredient);
@@ -123,17 +127,17 @@ public class IngredientService {
 
     public IngredientAdminDetailResponse getIngredientDetail(Long ingredientId) {
         Ingredient ingredient = ingredientRepository.findById(ingredientId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 식재료입니다."));
+                .orElseThrow(IngredientNotFound::new);
 
         return new IngredientAdminDetailResponse(ingredient);
     }
 
     public IngredientAdminDetailResponse editIngredient(Long ingredientId, IngredientEditRequest request) {
         Ingredient ingredient = ingredientRepository.findById(ingredientId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 식재료입니다."));
+                .orElseThrow(IngredientNotFound::new);
 
         if (!unitService.unitExistCheck(request.getName(), Unit.valueOf(request.getUnit()))) {
-            throw new IllegalArgumentException("존재하지 않는 단위입니다.");
+            throw new UnitNotFound();
         }
 
         ingredient.setName(request.getName());
@@ -147,7 +151,7 @@ public class IngredientService {
 
     public void deleteIngredient(Long ingredientId) {
         Ingredient ingredient = ingredientRepository.findById(ingredientId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 식재료입니다."));
+                .orElseThrow(IngredientNotFound::new);
 
         ingredientRepository.delete(ingredient);
     }
