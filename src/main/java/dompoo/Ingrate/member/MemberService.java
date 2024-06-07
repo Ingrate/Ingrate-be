@@ -25,6 +25,10 @@ public class MemberService {
             throw new AlreadyExistUsername();
         }
 
+        if (!signUpRequest.getPassword().equals(signUpRequest.getPasswordCheck())) {
+            throw new PasswordICheckIncorrect();
+        }
+
         Member member = memberRepository.save(Member.builder()
                 .username(signUpRequest.getUsername())
                 .password(encoder.encode(signUpRequest.getPassword()))
