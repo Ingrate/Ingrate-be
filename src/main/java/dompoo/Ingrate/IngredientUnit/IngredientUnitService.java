@@ -3,6 +3,7 @@ package dompoo.Ingrate.IngredientUnit;
 import dompoo.Ingrate.IngredientUnit.dto.UnitAddRequest;
 import dompoo.Ingrate.IngredientUnit.dto.UnitResponse;
 import dompoo.Ingrate.config.enums.Unit;
+import dompoo.Ingrate.exception.AlreadyExistUnit;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,7 +29,7 @@ public class IngredientUnitService {
 
     public UnitResponse addUnit(UnitAddRequest request) {
         if (ingredientUnitRepository.existsByNameAndUnit(request.getName(), Unit.valueOf(request.getUnit()))) {
-            throw new IllegalArgumentException("이미 존재하는 식재료-단위입니다.");
+            throw new AlreadyExistUnit();
         }
 
         IngredientUnit savedUnit = ingredientUnitRepository.save(IngredientUnit.builder()

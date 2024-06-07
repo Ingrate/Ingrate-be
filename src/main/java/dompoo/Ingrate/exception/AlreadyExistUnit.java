@@ -2,12 +2,12 @@ package dompoo.Ingrate.exception;
 
 import dompoo.Ingrate.config.exception.MyException;
 
-public class NotMyIngredient extends MyException {
+public class AlreadyExistUnit extends MyException {
 
-    private static final String MESSAGE = "본인의 식재료가 아닙니다.";
+    private static final String MESSAGE = "이미 존재하는 식재료-단위입니다.";
     private static final String CODE = "400";
 
-    public NotMyIngredient() {
+    public AlreadyExistUnit() {
         super(MESSAGE);
     }
 
