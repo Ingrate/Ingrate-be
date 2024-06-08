@@ -1,7 +1,9 @@
 package dompoo.Ingrate.ingredient;
 
+import dompoo.Ingrate.config.security.UserPrincipal;
 import dompoo.Ingrate.ingredient.dto.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,28 +23,28 @@ public class IngredientController {
     }
 
     @PostMapping("/ingredient")
-    public void addIngredient(Long memberId, @RequestBody IngredientAddRequest request) {
-        ingredientService.addIngredient(memberId, request);
+    public void addIngredient(@AuthenticationPrincipal UserPrincipal principal, @RequestBody IngredientAddRequest request) {
+        ingredientService.addIngredient(principal.getMemberId(), request);
     }
 
     @GetMapping("/ingredient")
-    public List<IngredientResponse> getMyIngredient(Long memberId) {
-        return ingredientService.getMyIngredient(memberId);
+    public List<IngredientResponse> getMyIngredient(@AuthenticationPrincipal UserPrincipal principal) {
+        return ingredientService.getMyIngredient(principal.getMemberId());
     }
 
     @GetMapping("/ingredient/{ingredientId}")
-    public IngredientDetailResponse getMyIngredient(Long memberId, @PathVariable Long ingredientId) {
-        return ingredientService.getMyIngredientDetail(memberId, ingredientId);
+    public IngredientDetailResponse getMyIngredient(@AuthenticationPrincipal UserPrincipal principal, @PathVariable Long ingredientId) {
+        return ingredientService.getMyIngredientDetail(principal.getMemberId(), ingredientId);
     }
 
     @PutMapping("/ingredient/{ingredientId}")
-    public IngredientDetailResponse editMyIngredient(Long memberId, @PathVariable Long ingredientId, @RequestBody IngredientEditRequest request) {
-        return ingredientService.editMyIngredient(memberId, ingredientId, request);
+    public IngredientDetailResponse editMyIngredient(@AuthenticationPrincipal UserPrincipal principal, @PathVariable Long ingredientId, @RequestBody IngredientEditRequest request) {
+        return ingredientService.editMyIngredient(principal.getMemberId(), ingredientId, request);
     }
 
     @DeleteMapping("/ingredient/{ingredientId}")
-    public void deleteMyIngredient(Long memberId, @PathVariable Long ingredientId) {
-        ingredientService.deleteMyIngredient(memberId, ingredientId);
+    public void deleteMyIngredient(@AuthenticationPrincipal UserPrincipal principal, @PathVariable Long ingredientId) {
+        ingredientService.deleteMyIngredient(principal.getMemberId(), ingredientId);
     }
 
     //어드민 기능
