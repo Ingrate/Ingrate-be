@@ -1,7 +1,9 @@
 package dompoo.Ingrate.member;
 
+import dompoo.Ingrate.config.security.UserPrincipal;
 import dompoo.Ingrate.member.dto.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,23 +22,23 @@ public class MemberController {
 
     //회원 기능
     @GetMapping("/member")
-    public MemberDetailResponse getMyInfo(Long memberId) {
-        return memberService.getMyInfo(memberId);
+    public MemberDetailResponse getMyInfo(@AuthenticationPrincipal UserPrincipal principal) {
+        return memberService.getMyInfo(principal.getMemberId());
     }
 
     @PostMapping("/member")
-    public PasswordCheckResponse checkMyPassword(Long memberId, @RequestBody PasswordCheckRequest request) {
-        return memberService.checkMyPassword(memberId, request);
+    public PasswordCheckResponse checkMyPassword(@AuthenticationPrincipal UserPrincipal principal, @RequestBody PasswordCheckRequest request) {
+        return memberService.checkMyPassword(principal.getMemberId(), request);
     }
 
     @PutMapping("/member")
-    public MemberDetailResponse changeMyPassword(Long memberId, @RequestBody PasswordChangeRequest request) {
-        return memberService.changeMyPassword(memberId, request);
+    public MemberDetailResponse changeMyPassword(@AuthenticationPrincipal UserPrincipal principal, @RequestBody PasswordChangeRequest request) {
+        return memberService.changeMyPassword(principal.getMemberId(), request);
     }
 
     @DeleteMapping("/member")
-    public WithdrawalResponse withdrawal(Long memberId, @RequestBody PasswordCheckRequest request) {
-        return memberService.withdrawal(memberId, request);
+    public WithdrawalResponse withdrawal(@AuthenticationPrincipal UserPrincipal principal, @RequestBody PasswordCheckRequest request) {
+        return memberService.withdrawal(principal.getMemberId(), request);
     }
 
     //어드민 기능
