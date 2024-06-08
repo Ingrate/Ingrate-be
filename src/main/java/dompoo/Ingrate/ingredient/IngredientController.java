@@ -3,6 +3,7 @@ package dompoo.Ingrate.ingredient;
 import dompoo.Ingrate.config.security.UserPrincipal;
 import dompoo.Ingrate.ingredient.dto.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,22 +49,25 @@ public class IngredientController {
     }
 
     //어드민 기능
-    //TODO: 어드민만 접근 가능하도록 수정
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/manage/ingredient")
     public List<IngredientResponse> getAllIngredient() {
         return ingredientService.getAllIngredient();
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/manage/ingredient/{ingredientId}")
     public IngredientAdminDetailResponse getIngredientDetail(@PathVariable Long ingredientId) {
         return ingredientService.getIngredientDetail(ingredientId);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/manage/ingredient/{ingredientId}")
     public IngredientAdminDetailResponse editIngredient(@PathVariable Long ingredientId, @RequestBody IngredientEditRequest request) {
         return ingredientService.editIngredient(ingredientId, request);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/manage/ingredient/{ingredientId}")
     public void deleteIngredient(@PathVariable Long ingredientId) {
         ingredientService.deleteIngredient(ingredientId);
