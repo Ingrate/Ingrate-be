@@ -3,6 +3,7 @@ package dompoo.Ingrate.member;
 import dompoo.Ingrate.config.security.UserPrincipal;
 import dompoo.Ingrate.member.dto.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,17 +43,19 @@ public class MemberController {
     }
 
     //어드민 기능
-    //TODO: 어드민만 접근 가능하도록 수정
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/manage/member")
     public List<MemberResponse> getAllMember() {
         return memberService.getAllMember();
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/manage/member/{memberId}")
     public MemberAdminDetailResponse getMemberDetail(@PathVariable Long memberId) {
         return memberService.getMemberDetail(memberId);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/manage/member/{memberId}")
     public void deleteMember(@PathVariable Long memberId) {
         memberService.deleteMember(memberId);
