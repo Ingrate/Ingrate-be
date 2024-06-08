@@ -16,13 +16,12 @@ public class IngredientController {
     private final IngredientService ingredientService;
 
     //비회원 기능
-
-    //회원 기능
     @GetMapping("/ingredient/rate")
     public IngredientRateResponse rateIngredient(@RequestBody IngredientRateRequest request) {
         return ingredientService.rateIngredient(request);
     }
 
+    //회원 기능
     @PostMapping("/ingredient")
     public void addIngredient(@AuthenticationPrincipal UserPrincipal principal, @RequestBody IngredientAddRequest request) {
         ingredientService.addIngredient(principal.getMemberId(), request);
