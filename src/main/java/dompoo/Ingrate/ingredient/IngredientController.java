@@ -2,6 +2,7 @@ package dompoo.Ingrate.ingredient;
 
 import dompoo.Ingrate.config.security.UserPrincipal;
 import dompoo.Ingrate.ingredient.dto.*;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,13 +18,13 @@ public class IngredientController {
 
     //비회원 기능
     @GetMapping("/ingredient/rate")
-    public IngredientRateResponse rateIngredient(@RequestBody IngredientRateRequest request) {
+    public IngredientRateResponse rateIngredient(@RequestBody @Valid IngredientRateRequest request) {
         return ingredientService.rateIngredient(request);
     }
 
     //회원 기능
     @PostMapping("/ingredient")
-    public void addIngredient(@AuthenticationPrincipal UserPrincipal principal, @RequestBody IngredientAddRequest request) {
+    public void addIngredient(@AuthenticationPrincipal UserPrincipal principal, @RequestBody @Valid IngredientAddRequest request) {
         ingredientService.addIngredient(principal.getMemberId(), request);
     }
 
@@ -38,7 +39,7 @@ public class IngredientController {
     }
 
     @PutMapping("/ingredient/{ingredientId}")
-    public IngredientDetailResponse editMyIngredient(@AuthenticationPrincipal UserPrincipal principal, @PathVariable Long ingredientId, @RequestBody IngredientEditRequest request) {
+    public IngredientDetailResponse editMyIngredient(@AuthenticationPrincipal UserPrincipal principal, @PathVariable Long ingredientId, @RequestBody @Valid IngredientEditRequest request) {
         return ingredientService.editMyIngredient(principal.getMemberId(), ingredientId, request);
     }
 
@@ -62,7 +63,7 @@ public class IngredientController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/manage/ingredient/{ingredientId}")
-    public IngredientAdminDetailResponse editIngredient(@PathVariable Long ingredientId, @RequestBody IngredientEditRequest request) {
+    public IngredientAdminDetailResponse editIngredient(@PathVariable Long ingredientId, @RequestBody @Valid IngredientEditRequest request) {
         return ingredientService.editIngredient(ingredientId, request);
     }
 
