@@ -18,13 +18,13 @@ import java.nio.charset.StandardCharsets;
 @RequiredArgsConstructor
 public class Http401Handler implements AuthenticationEntryPoint {
 
-    private static final String MESSAGE = "[인증오류] 로그인이 필요합니다.";
+    private static final String MESSAGE = "로그인이 필요합니다.";
 
     private final ObjectMapper objectMapper;
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-        log.error(MESSAGE);
+        log.error("[인증 오류]" + MESSAGE);
 
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .code("401")
