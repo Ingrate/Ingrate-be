@@ -18,13 +18,13 @@ import java.nio.charset.StandardCharsets;
 @RequiredArgsConstructor
 public class Http403Handler implements AccessDeniedHandler {
 
-    private static final String MESSAGE = "[인증오류] 권한이 없습니다.";
+    private static final String MESSAGE = "권한이 없습니다.";
 
     private final ObjectMapper objectMapper;
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
-        log.error(MESSAGE);
+        log.error("[인증 오류]" + MESSAGE);
 
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .code("403")

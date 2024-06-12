@@ -1,7 +1,11 @@
 package dompoo.Ingrate.ingredient;
 
+import dompoo.Ingrate.config.security.UserPrincipal;
 import dompoo.Ingrate.ingredient.dto.*;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,55 +17,57 @@ public class IngredientController {
     private final IngredientService ingredientService;
 
     //비회원 기능
-
-    //회원 기능
     @GetMapping("/ingredient/rate")
-    public IngredientRateResponse rateIngredient(@RequestBody IngredientRateRequest request) {
+    public IngredientRateResponse rateIngredient(@RequestBody @Valid IngredientRateRequest request) {
         return ingredientService.rateIngredient(request);
     }
 
+    //회원 기능
     @PostMapping("/ingredient")
-    public void addIngredient(Long memberId, @RequestBody IngredientAddRequest request) {
-        ingredientService.addIngredient(memberId, request);
+    public void addIngredient(@AuthenticationPrincipal UserPrincipal principal, @RequestBody @Valid IngredientAddRequest request) {
+        ingredientService.addIngredient(principal.getMemberId(), request);
     }
 
     @GetMapping("/ingredient")
-    public List<IngredientResponse> getMyIngredient(Long memberId) {
-        return ingredientService.getMyIngredient(memberId);
+    public List<IngredientResponse> getMyIngredient(@AuthenticationPrincipal UserPrincipal principal) {
+        return ingredientService.getMyIngredient(principal.getMemberId());
     }
 
     @GetMapping("/ingredient/{ingredientId}")
-    public IngredientDetailResponse getMyIngredient(Long memberId, @PathVariable Long ingredientId) {
-        return ingredientService.getMyIngredientDetail(memberId, ingredientId);
+    public IngredientDetailResponse getMyIngredient(@AuthenticationPrincipal UserPrincipal principal, @PathVariable Long ingredientId) {
+        return ingredientService.getMyIngredientDetail(principal.getMemberId(), ingredientId);
     }
 
     @PutMapping("/ingredient/{ingredientId}")
-    public IngredientDetailResponse editMyIngredient(Long memberId, @PathVariable Long ingredientId, @RequestBody IngredientEditRequest request) {
-        return ingredientService.editMyIngredient(memberId, ingredientId, request);
+    public IngredientDetailResponse editMyIngredient(@AuthenticationPrincipal UserPrincipal principal, @PathVariable Long ingredientId, @RequestBody @Valid IngredientEditRequest request) {
+        return ingredientService.editMyIngredient(principal.getMemberId(), ingredientId, request);
     }
 
     @DeleteMapping("/ingredient/{ingredientId}")
-    public void deleteMyIngredient(Long memberId, @PathVariable Long ingredientId) {
-        ingredientService.deleteMyIngredient(memberId, ingredientId);
+    public void deleteMyIngredient(@AuthenticationPrincipal UserPrincipal principal, @PathVariable Long ingredientId) {
+        ingredientService.deleteMyIngredient(principal.getMemberId(), ingredientId);
     }
 
     //어드민 기능
-    //TODO: 어드민만 접근 가능하도록 수정
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/manage/ingredient")
     public List<IngredientResponse> getAllIngredient() {
         return ingredientService.getAllIngredient();
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/manage/ingredient/{ingredientId}")
     public IngredientAdminDetailResponse getIngredientDetail(@PathVariable Long ingredientId) {
         return ingredientService.getIngredientDetail(ingredientId);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/manage/ingredient/{ingredientId}")
-    public IngredientAdminDetailResponse editIngredient(@PathVariable Long ingredientId, @RequestBody IngredientEditRequest request) {
+    public IngredientAdminDetailResponse editIngredient(@PathVariable Long ingredientId, @RequestBody @Valid IngredientEditRequest request) {
         return ingredientService.editIngredient(ingredientId, request);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/manage/ingredient/{ingredientId}")
     public void deleteIngredient(@PathVariable Long ingredientId) {
         ingredientService.deleteIngredient(ingredientId);
