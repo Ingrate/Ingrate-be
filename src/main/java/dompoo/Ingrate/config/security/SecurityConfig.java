@@ -62,16 +62,15 @@ public class SecurityConfig {
 
     @Bean
     public JsonUsernamePasswordAuthenticationFilter jsonUsernamePasswordAuthenticationFilter() {
-        JsonUsernamePasswordAuthenticationFilter filter = new JsonUsernamePasswordAuthenticationFilter(objectMapper);
+        SpringSessionRememberMeServices rememberMeServices = new SpringSessionRememberMeServices();
+
+        JsonUsernamePasswordAuthenticationFilter filter = new JsonUsernamePasswordAuthenticationFilter(objectMapper, rememberMeServices);
         filter.setAuthenticationManager(authenticationManager());
         filter.setFilterProcessesUrl("/auth/login");
         filter.setAuthenticationFailureHandler(new LoginFailHandler(objectMapper));
         filter.setAuthenticationSuccessHandler(new LoginSuccessHandler(objectMapper));
         filter.setSecurityContextRepository(new HttpSessionSecurityContextRepository());
 
-        SpringSessionRememberMeServices rememberMeServices = new SpringSessionRememberMeServices();
-        rememberMeServices.setAlwaysRemember(true);
-        rememberMeServices.setValiditySeconds(2592000);
         filter.setRememberMeServices(rememberMeServices);
 
         return filter;
