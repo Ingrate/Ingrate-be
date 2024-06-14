@@ -5,6 +5,7 @@ import dompoo.Ingrate.ingredient.Ingredient;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +26,9 @@ public class Member {
     private Integer point;
     private Role role;
 
+    private Integer failedAttempts;
+    private LocalDateTime lockTime;
+
     @OneToMany(mappedBy = "member")
     private List<Ingredient> ingredients = new ArrayList<>();
 
@@ -35,6 +39,8 @@ public class Member {
         this.posts = 0;
         this.point = 5;
         this.role = MEMBER;
+        this.failedAttempts = 0;
+        this.lockTime = LocalDateTime.now();
     }
 
     public void addPost(Integer num) {
@@ -43,5 +49,22 @@ public class Member {
 
     public void addPoint(Integer num) {
         this.point += num;
+    }
+
+    public void successPasswordCheck() {
+        this.failedAttempts = 0;
+    }
+
+    public void failPasswordCheck() {
+        this.failedAttempts++;
+
+        //연속해서 5번 실패할 때마다 timeout
+        if (this.failedAttempts != 0 && this.failedAttempts % 5 == 0) {
+            this.lockTime = LocalDateTime.now().plusSeconds(failedAttempts * 6);
+        }
+    }
+
+    public boolean isAccountLocked() {
+        return LocalDateTime.now().isBefore(lockTime);
     }
 }

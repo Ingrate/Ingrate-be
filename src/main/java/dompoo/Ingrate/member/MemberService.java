@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -47,11 +49,35 @@ public class MemberService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(MemberNotFound::new);
 
+        if (member.isAccountLocked()) {
+            Long remainLock = Duration
+                    .between(LocalDateTime.now(), member.getLockTime())
+                    .toSeconds();
+
+            return PasswordCheckResponse.builder()
+                    .isCorrect(false)
+                    .isLocked(true)
+                    .failedAttempts(member.getFailedAttempts())
+                    .remainLockTime(remainLock)
+                    .build();
+        }
+
         if (encoder.matches(request.getPassword(), member.getPassword())) {
-            return new PasswordCheckResponse(true);
+            member.successPasswordCheck();
+            return PasswordCheckResponse.builder()
+                    .isCorrect(true)
+                    .isLocked(false)
+                    .failedAttempts(0)
+                    .remainLockTime(0L)
+                    .build();
         } else {
-            //TODO: password 확인 실패시 지수형태의 timeout 발생
-            return new PasswordCheckResponse(false);
+            member.failPasswordCheck();
+            return PasswordCheckResponse.builder()
+                    .isCorrect(false)
+                    .isLocked(false)
+                    .failedAttempts(member.getFailedAttempts())
+                    .remainLockTime(0L)
+                    .build();
         }
     }
 
