@@ -10,7 +10,7 @@ public class UnitAddRequest {
 
     @NotEmpty(message = "식재료명을 입력해주세요.")
     private String name;
-    @NotEmpty(message = "단위명을 입력해주세요.")
+    @NotEmpty(message = "단위를 입력해주세요.")
     private String unit;
 
     @Builder
