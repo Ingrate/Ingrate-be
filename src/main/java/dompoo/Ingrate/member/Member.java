@@ -57,11 +57,6 @@ public class Member {
 
     public void failPasswordCheck() {
         this.failedAttempts++;
-
-        //연속해서 5번 실패할 때마다 timeout
-        if (this.failedAttempts != 0 && this.failedAttempts % 5 == 0) {
-            this.lockTime = LocalDateTime.now().plusSeconds(failedAttempts * 6);
-        }
     }
 
     public boolean isAccountLocked() {
