@@ -1,8 +1,6 @@
 package dompoo.Ingrate.member;
 
-import dompoo.Ingrate.exception.AlreadyExistUsername;
-import dompoo.Ingrate.exception.MemberNotFound;
-import dompoo.Ingrate.exception.PasswordICheckIncorrect;
+import dompoo.Ingrate.exception.*;
 import dompoo.Ingrate.member.dto.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -49,36 +47,28 @@ public class MemberService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(MemberNotFound::new);
 
-        if (member.isAccountLocked()) {
-            Long remainLock = Duration
-                    .between(LocalDateTime.now(), member.getLockTime())
-                    .toSeconds();
-
-            return PasswordCheckResponse.builder()
-                    .isCorrect(false)
-                    .isLocked(true)
-                    .failedAttempts(member.getFailedAttempts())
-                    .remainLockTime(remainLock)
-                    .build();
-        }
-
-        if (encoder.matches(request.getPassword(), member.getPassword())) {
-            member.successPasswordCheck();
-            return PasswordCheckResponse.builder()
-                    .isCorrect(true)
-                    .isLocked(false)
-                    .failedAttempts(0)
-                    .remainLockTime(0L)
-                    .build();
-        } else {
+        //비밀번호가 틀리다면 시도회수를 1회 증가시키고, 5회마다 계정을 잠금한다.
+        if (!encoder.matches(request.getPassword(), member.getPassword())) {
             member.failPasswordCheck();
-            return PasswordCheckResponse.builder()
-                    .isCorrect(false)
-                    .isLocked(false)
-                    .failedAttempts(member.getFailedAttempts())
-                    .remainLockTime(0L)
-                    .build();
+
+            Integer failedAttempts = member.getFailedAttempts();
+            if (failedAttempts != 0 && failedAttempts % 5 == 0) {
+                member.setLockTime(LocalDateTime.now().plusSeconds(failedAttempts * 6));
+            }
+
+            if (member.isAccountLocked()) {
+                Long remainLock = Duration
+                        .between(LocalDateTime.now(), member.getLockTime())
+                        .toSeconds();
+                throw new PasswordCheckLock(remainLock);
+            } else {
+                throw new PasswordCheckFail(failedAttempts);
+            }
         }
+
+        //비밀번호가 맞다면 정상 처리한다.
+        member.successPasswordCheck();
+        return new PasswordCheckResponse(true);
     }
 
     public MemberDetailResponse changeMyPassword(Long memberId, PasswordChangeRequest request) {
