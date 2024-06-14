@@ -3,7 +3,6 @@ package dompoo.Ingrate.member;
 import dompoo.Ingrate.exception.AlreadyExistUsername;
 import dompoo.Ingrate.exception.MemberNotFound;
 import dompoo.Ingrate.exception.PasswordICheckIncorrect;
-import dompoo.Ingrate.exception.PasswordIncorrect;
 import dompoo.Ingrate.member.dto.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -59,10 +58,6 @@ public class MemberService {
     public MemberDetailResponse changeMyPassword(Long memberId, PasswordChangeRequest request) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(MemberNotFound::new);
-
-        if (!encoder.matches(request.getOldPassword(), member.getPassword())) {
-            throw new PasswordIncorrect();
-        }
 
         if (!request.getNewPassword().equals(request.getNewPasswordCheck())) {
             throw new PasswordICheckIncorrect();

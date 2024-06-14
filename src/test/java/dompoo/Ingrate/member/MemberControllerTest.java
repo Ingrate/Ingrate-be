@@ -285,7 +285,6 @@ class MemberControllerTest {
     void changeMyPassword() throws Exception {
         //given
         PasswordChangeRequest request = PasswordChangeRequest.builder()
-                .oldPassword("1234")
                 .newPassword("5678")
                 .newPasswordCheck("5678")
                 .build();
@@ -308,7 +307,6 @@ class MemberControllerTest {
     void changeMyPasswordFail1() throws Exception {
         //given
         PasswordChangeRequest request = PasswordChangeRequest.builder()
-                .oldPassword("1234")
                 .newPassword("5678")
                 .newPasswordCheck("5678")
                 .build();
@@ -326,34 +324,11 @@ class MemberControllerTest {
     }
 
     @Test
-    @DisplayName("내 비밀번호 변경시 기존 비밀번호는 필수이다.")
-    @WithMockMember
-    void changeMyPasswordFail2() throws Exception {
-        //given
-        PasswordChangeRequest request = PasswordChangeRequest.builder()
-                .newPassword("5678")
-                .newPasswordCheck("5678")
-                .build();
-
-        String json = objectMapper.writeValueAsString(request);
-
-        //expected
-        mockMvc.perform(put("/member")
-                        .contentType(APPLICATION_JSON)
-                        .content(json))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("code").value(400))
-                .andExpect(jsonPath("message").value("기존 비밀번호를 입력해주세요."))
-                .andDo(print());
-    }
-
-    @Test
     @DisplayName("내 비밀번호 변경시 새로운 비밀번호는 필수이다.")
     @WithMockMember
     void changeMyPasswordFail3() throws Exception {
         //given
         PasswordChangeRequest request = PasswordChangeRequest.builder()
-                .oldPassword("1234")
                 .newPasswordCheck("5678")
                 .build();
 
@@ -375,7 +350,6 @@ class MemberControllerTest {
     void changeMyPasswordFail4() throws Exception {
         //given
         PasswordChangeRequest request = PasswordChangeRequest.builder()
-                .oldPassword("1234")
                 .newPassword("5678")
                 .build();
 
@@ -392,35 +366,11 @@ class MemberControllerTest {
     }
 
     @Test
-    @DisplayName("내 비밀번호 변경시 기존 비밀번호는 일치해야 한다.")
-    @WithMockMember
-    void changeMyPasswordFail5() throws Exception {
-        //given
-        PasswordChangeRequest request = PasswordChangeRequest.builder()
-                .oldPassword("qwer")
-                .newPassword("5678")
-                .newPasswordCheck("5678")
-                .build();
-
-        String json = objectMapper.writeValueAsString(request);
-
-        //expected
-        mockMvc.perform(put("/member")
-                        .contentType(APPLICATION_JSON)
-                        .content(json))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("code").value(400))
-                .andExpect(jsonPath("message").value("비밀번호가 일치하지 않습니다."))
-                .andDo(print());
-    }
-
-    @Test
     @DisplayName("내 비밀번호 변경시 새로운 비밀번호와 비밀번호 확인은 일치해야 한다.")
     @WithMockMember
     void changeMyPasswordFail6() throws Exception {
         //given
         PasswordChangeRequest request = PasswordChangeRequest.builder()
-                .oldPassword("1234")
                 .newPassword("5678")
                 .newPasswordCheck("qwer")
                 .build();

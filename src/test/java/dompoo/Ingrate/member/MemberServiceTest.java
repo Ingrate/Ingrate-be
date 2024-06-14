@@ -3,7 +3,6 @@ package dompoo.Ingrate.member;
 import dompoo.Ingrate.exception.AlreadyExistUsername;
 import dompoo.Ingrate.exception.MemberNotFound;
 import dompoo.Ingrate.exception.PasswordICheckIncorrect;
-import dompoo.Ingrate.exception.PasswordIncorrect;
 import dompoo.Ingrate.member.dto.*;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.AfterEach;
@@ -188,7 +187,6 @@ class MemberServiceTest {
                 .build());
 
         PasswordChangeRequest request = PasswordChangeRequest.builder()
-                .oldPassword("1234")
                 .newPassword("5678")
                 .newPasswordCheck("5678")
                 .build();
@@ -211,7 +209,6 @@ class MemberServiceTest {
                 .build());
 
         PasswordChangeRequest request = PasswordChangeRequest.builder()
-                .oldPassword("1234")
                 .newPassword("5678")
                 .newPasswordCheck("5678")
                 .build();
@@ -223,27 +220,7 @@ class MemberServiceTest {
     }
 
     @Test
-    @DisplayName("패스워드 틀린 비밀번호 변경")
-    void changePasswordFail2() {
-        Member me = repository.save(Member.builder()
-                .username("창근")
-                .password(encoder.encode("1234"))
-                .build());
-
-        PasswordChangeRequest request = PasswordChangeRequest.builder()
-                .oldPassword("qwer")
-                .newPassword("5678")
-                .newPasswordCheck("5678")
-                .build();
-
-        //expected
-        assertThatThrownBy(() ->
-                service.changeMyPassword(me.getId(), request))
-                .isInstanceOf(PasswordIncorrect.class);
-    }
-
-    @Test
-    @DisplayName("패스워드 확인 틀린 비밀번호 변경")
+    @DisplayName("비밀번호 확인 틀린 비밀번호 변경")
     void changePasswordFail3() {
         Member me = repository.save(Member.builder()
                 .username("창근")
@@ -251,7 +228,6 @@ class MemberServiceTest {
                 .build());
 
         PasswordChangeRequest request = PasswordChangeRequest.builder()
-                .oldPassword("1234")
                 .newPassword("5678")
                 .newPasswordCheck("qwer")
                 .build();
