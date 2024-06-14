@@ -51,7 +51,7 @@ class MemberServiceTest {
     }
 
     @Test
-    @DisplayName("이미 존재하는 닉네임으로 회원가입")
+    @DisplayName("이미 존재하는 사용자명으로 회원가입")
     void signUpFail1() {
         //given
         repository.save(Member.builder()
