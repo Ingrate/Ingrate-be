@@ -8,6 +8,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithSecurityContextFactory;
 
 import java.util.List;
@@ -16,13 +17,14 @@ import java.util.List;
 public class WithMockMemberSecurityContextFactory implements WithSecurityContextFactory<WithMockMember> {
 
     private final MemberRepository memberRepository;
+    private final PasswordEncoder encoder;
 
     @Override
     public SecurityContext createSecurityContext(WithMockMember annotation) {
 
         Member member = memberRepository.save(Member.builder()
                 .username(annotation.username())
-                .password(annotation.password())
+                .password(encoder.encode(annotation.password()))
                 .build());
 
         UserPrincipal principal = new UserPrincipal(member);
