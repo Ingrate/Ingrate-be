@@ -6,6 +6,7 @@ import dompoo.Ingrate.member.dto.PasswordChangeRequest;
 import dompoo.Ingrate.member.dto.PasswordCheckRequest;
 import dompoo.Ingrate.member.dto.SignUpRequest;
 import jakarta.transaction.Transactional;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -224,6 +225,8 @@ class MemberControllerTest {
     @WithMockMember
     void checkMyPassword2() throws Exception {
         //given
+        int failedAttempts = memberRepository.findAll().getLast().getFailedAttempts() + 1;
+
         PasswordCheckRequest request = PasswordCheckRequest.builder()
                 .password("5678")
                 .build();
@@ -234,9 +237,34 @@ class MemberControllerTest {
         mockMvc.perform(post("/member")
                         .contentType(APPLICATION_JSON)
                         .content(json))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("isCorrect").value(false))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("code").value("400"))
+                .andExpect(jsonPath("message").value("비밀번호가 일치하지 않습니다. (시도: " + failedAttempts + "회)"))
                 .andDo(print());
+    }
+
+    @Test
+    @DisplayName("내 비밀번호 확인 - 락")
+    @WithMockMember
+    void checkMyPasswordLock() throws Exception {
+        //given
+        memberRepository.findAll().getLast().setFailedAttempts(4);
+
+        PasswordCheckRequest request = PasswordCheckRequest.builder()
+                .password("5678")
+                .build();
+
+        String json = objectMapper.writeValueAsString(request);
+
+        //expected
+        mockMvc.perform(post("/member")
+                        .contentType(APPLICATION_JSON)
+                        .content(json))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("400"))
+                .andExpect(jsonPath("$.message").value(Matchers.endsWith("초 후 시도해주세요.")))
+                .andDo(print());
+
     }
 
     @Test

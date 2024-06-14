@@ -1,8 +1,6 @@
 package dompoo.Ingrate.member;
 
-import dompoo.Ingrate.exception.AlreadyExistUsername;
-import dompoo.Ingrate.exception.MemberNotFound;
-import dompoo.Ingrate.exception.PasswordICheckIncorrect;
+import dompoo.Ingrate.exception.*;
 import dompoo.Ingrate.member.dto.*;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.AfterEach;
@@ -152,11 +150,63 @@ class MemberServiceTest {
                 .password("5678")
                 .build();
 
-        //when
-        PasswordCheckResponse response = service.checkMyPassword(me.getId(), request);
+        //expected
+        assertThatThrownBy(() ->
+                service.checkMyPassword(me.getId(), request))
+                .isInstanceOf(PasswordCheckFail.class);
+    }
 
-        //then
-        assertThat(response.getIsCorrect()).isFalse();
+    @Test
+    @DisplayName("비밀번호 확인 틀린 후에 맞으면 시도 회수 초기화된다.")
+    void checkPasswordWrongRefresh() {
+        //given
+        Member me = repository.save(Member.builder()
+                .username("창근")
+                .password(encoder.encode("1234"))
+                .build());
+
+        PasswordCheckRequest wrongRequest = PasswordCheckRequest.builder()
+                .password("5678")
+                .build();
+
+        PasswordCheckRequest rightRequest = PasswordCheckRequest.builder()
+                .password("1234")
+                .build();
+
+        for (int i = 0; i < 4; i++) {
+            try {
+                service.checkMyPassword(me.getId(), wrongRequest);
+            } catch (PasswordCheckFail ignored) {}
+        }
+        service.checkMyPassword(me.getId(), rightRequest);
+
+        //expected
+        assertThat(me.getFailedAttempts()).isEqualTo(0);
+    }
+
+    @Test
+    @DisplayName("비밀번호 확인 틀림 - 락")
+    void checkPasswordLock() {
+        //given
+        Member me = repository.save(Member.builder()
+                .username("창근")
+                .password(encoder.encode("1234"))
+                .build());
+
+        PasswordCheckRequest request = PasswordCheckRequest.builder()
+                .password("5678")
+                .build();
+
+        for (int i = 0; i < 4; i++) {
+            try {
+                service.checkMyPassword(me.getId(), request);
+            } catch (PasswordCheckFail ignored) {}
+        }
+
+        //expected
+        assertThatThrownBy(() ->
+                service.checkMyPassword(me.getId(), request))
+                .isInstanceOf(PasswordCheckLock.class);
     }
 
     @Test
