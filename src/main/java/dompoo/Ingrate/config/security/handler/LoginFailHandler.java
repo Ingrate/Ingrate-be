@@ -34,7 +34,7 @@ public class LoginFailHandler implements AuthenticationFailureHandler {
         String username = request.getParameter("username");
 
         memberRepository.findByUsername(username)
-                .ifPresent(timeoutService::manageTimeout);
+                .ifPresent(timeoutService::checkFail);
 
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .code("400")

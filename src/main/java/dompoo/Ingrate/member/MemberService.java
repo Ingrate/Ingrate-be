@@ -50,11 +50,11 @@ public class MemberService {
 
         //비밀번호가 틀리다면 timeout 관리를 한다.
         if (!encoder.matches(request.getPassword(), member.getPassword())) {
-            timeoutService.manageTimeout(member);
+            timeoutService.checkFail(member);
         }
 
         //비밀번호가 맞다면 정상 처리한다.
-        member.successPasswordCheck();
+        timeoutService.checkSuccess(member);
         return new PasswordCheckResponse(true);
     }
 

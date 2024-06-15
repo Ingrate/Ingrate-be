@@ -14,8 +14,8 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class TimeoutService {
 
-    public void manageTimeout(Member member) {
-        member.failPasswordCheck();
+    public void checkFail(Member member) {
+        member.setFailedAttempts(member.getFailedAttempts() + 1);
 
         Integer failedAttempts = member.getFailedAttempts();
         if (failedAttempts != 0 && failedAttempts % 5 == 0) {
@@ -30,5 +30,9 @@ public class TimeoutService {
         } else {
             throw new PasswordCheckFail(failedAttempts);
         }
+    }
+
+    public void checkSuccess(Member member) {
+        member.setFailedAttempts(0);
     }
 }

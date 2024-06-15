@@ -5,6 +5,7 @@ import dompoo.Ingrate.config.security.handler.*;
 import dompoo.Ingrate.exception.UsernameNotFoundException;
 import dompoo.Ingrate.member.Member;
 import dompoo.Ingrate.member.MemberRepository;
+import dompoo.Ingrate.member.TimeoutService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,6 +34,7 @@ import static org.springframework.security.web.header.writers.frameoptions.XFram
 public class SecurityConfig {
 
     private final MemberRepository memberRepository;
+    private final TimeoutService timeoutService;
     private final ObjectMapper objectMapper;
 
     @Bean
@@ -67,7 +69,7 @@ public class SecurityConfig {
         JsonUsernamePasswordAuthenticationFilter filter = new JsonUsernamePasswordAuthenticationFilter(objectMapper, rememberMeServices);
         filter.setAuthenticationManager(authenticationManager());
         filter.setFilterProcessesUrl("/auth/login");
-        filter.setAuthenticationFailureHandler(new LoginFailHandler(objectMapper));
+        filter.setAuthenticationFailureHandler(new LoginFailHandler(objectMapper, memberRepository, timeoutService));
         filter.setAuthenticationSuccessHandler(new LoginSuccessHandler(objectMapper));
         filter.setSecurityContextRepository(new HttpSessionSecurityContextRepository());
 

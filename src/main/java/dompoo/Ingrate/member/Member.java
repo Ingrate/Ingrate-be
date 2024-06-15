@@ -51,14 +51,6 @@ public class Member {
         this.point += num;
     }
 
-    public void successPasswordCheck() {
-        this.failedAttempts = 0;
-    }
-
-    public void failPasswordCheck() {
-        this.failedAttempts++;
-    }
-
     public boolean isAccountLocked() {
         return LocalDateTime.now().isBefore(lockTime);
     }
