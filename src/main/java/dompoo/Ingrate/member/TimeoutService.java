@@ -15,24 +15,34 @@ import java.time.LocalDateTime;
 public class TimeoutService {
 
     public void checkFail(Member member) {
-        member.setFailedAttempts(member.getFailedAttempts() + 1);
-
         Integer failedAttempts = member.getFailedAttempts();
+
+        member.setFailedAttempts(++failedAttempts);
+
+        //5번 실패할때마다 락을 건다.
         if (failedAttempts != 0 && failedAttempts % 5 == 0) {
             member.setLockTime(LocalDateTime.now().plusSeconds(failedAttempts * 6));
         }
 
         if (member.isAccountLocked()) {
-            Long remainLock = Duration
-                    .between(LocalDateTime.now(), member.getLockTime())
-                    .toSeconds();
-            throw new PasswordCheckLock(remainLock);
+            throw new PasswordCheckLock(remainLockTime(member.getLockTime()));
         } else {
             throw new PasswordCheckFail(failedAttempts);
         }
     }
 
     public void checkSuccess(Member member) {
+        //아직 락이라면 예외를 던진다.
+        if (member.isAccountLocked()) {
+            throw new PasswordCheckLock(remainLockTime(member.getLockTime()));
+        }
+
         member.setFailedAttempts(0);
+    }
+
+    private Long remainLockTime(LocalDateTime lockTime) {
+        return Duration
+                .between(LocalDateTime.now(), lockTime)
+                .toSeconds();
     }
 }
