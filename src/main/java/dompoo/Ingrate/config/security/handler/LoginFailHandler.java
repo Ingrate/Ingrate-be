@@ -2,6 +2,8 @@ package dompoo.Ingrate.config.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dompoo.Ingrate.config.exception.ErrorResponse;
+import dompoo.Ingrate.member.MemberRepository;
+import dompoo.Ingrate.member.TimeoutService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -21,10 +23,18 @@ public class LoginFailHandler implements AuthenticationFailureHandler {
     private static final String MESSAGE = "아이디 또는 비밀번호가 일치하지 않습니다.";
 
     private final ObjectMapper objectMapper;
+    private final MemberRepository memberRepository;
+    private final TimeoutService timeoutService;
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         log.error("[인증오류]" + MESSAGE);
+
+        //username을 기반으로 timeout을 관리한다.
+        String username = request.getParameter("username");
+
+        memberRepository.findByUsername(username)
+                .ifPresent(timeoutService::manageTimeout);
 
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .code("400")
