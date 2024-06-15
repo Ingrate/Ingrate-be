@@ -1,14 +1,14 @@
 package dompoo.Ingrate.member;
 
-import dompoo.Ingrate.exception.*;
+import dompoo.Ingrate.exception.AlreadyExistUsername;
+import dompoo.Ingrate.exception.MemberNotFound;
+import dompoo.Ingrate.exception.PasswordICheckIncorrect;
 import dompoo.Ingrate.member.dto.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -17,6 +17,7 @@ import java.util.List;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final TimeoutService timeoutService;
     private final PasswordEncoder encoder;
 
     public SignUpResponse signUp(SignUpRequest signUpRequest) {
@@ -47,23 +48,9 @@ public class MemberService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(MemberNotFound::new);
 
-        //비밀번호가 틀리다면 시도회수를 1회 증가시키고, 5회마다 계정을 잠금한다.
+        //비밀번호가 틀리다면 timeout 관리를 한다.
         if (!encoder.matches(request.getPassword(), member.getPassword())) {
-            member.failPasswordCheck();
-
-            Integer failedAttempts = member.getFailedAttempts();
-            if (failedAttempts != 0 && failedAttempts % 5 == 0) {
-                member.setLockTime(LocalDateTime.now().plusSeconds(failedAttempts * 6));
-            }
-
-            if (member.isAccountLocked()) {
-                Long remainLock = Duration
-                        .between(LocalDateTime.now(), member.getLockTime())
-                        .toSeconds();
-                throw new PasswordCheckLock(remainLock);
-            } else {
-                throw new PasswordCheckFail(failedAttempts);
-            }
+            timeoutService.manageTimeout(member);
         }
 
         //비밀번호가 맞다면 정상 처리한다.
