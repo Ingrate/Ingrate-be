@@ -4,7 +4,12 @@ import lombok.Getter;
 
 @Getter
 public enum Unit {
-    GRAM("g"), MILILITER("mL"), DAN("단");
+    GE("개"),
+    GRAM("g"),
+    MILILITER("mL"),
+    DAN("단"),
+    POGI("포기"),
+    ;
 
     private final String name;
 

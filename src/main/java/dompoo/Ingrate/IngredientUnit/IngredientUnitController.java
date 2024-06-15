@@ -2,6 +2,7 @@ package dompoo.Ingrate.IngredientUnit;
 
 import dompoo.Ingrate.IngredientUnit.dto.UnitAddRequest;
 import dompoo.Ingrate.IngredientUnit.dto.UnitResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,7 +29,7 @@ public class IngredientUnitController {
     //어드민 기능
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/ingredient/unit")
-    public UnitResponse addUnit(@RequestBody UnitAddRequest request) {
+    public UnitResponse addUnit(@RequestBody @Valid UnitAddRequest request) {
         return ingredientUnitService.addUnit(request);
     }
 }

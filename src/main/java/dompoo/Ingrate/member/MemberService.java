@@ -3,7 +3,6 @@ package dompoo.Ingrate.member;
 import dompoo.Ingrate.exception.AlreadyExistUsername;
 import dompoo.Ingrate.exception.MemberNotFound;
 import dompoo.Ingrate.exception.PasswordICheckIncorrect;
-import dompoo.Ingrate.exception.PasswordIncorrect;
 import dompoo.Ingrate.member.dto.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +17,7 @@ import java.util.List;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final TimeoutService timeoutService;
     private final PasswordEncoder encoder;
 
     public SignUpResponse signUp(SignUpRequest signUpRequest) {
@@ -48,21 +48,19 @@ public class MemberService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(MemberNotFound::new);
 
-        if (encoder.matches(request.getPassword(), member.getPassword())) {
-            return new PasswordCheckResponse(true);
-        } else {
-            //TODO: password 확인 실패시 지수형태의 timeout 발생
-            return new PasswordCheckResponse(false);
+        //비밀번호가 틀리다면 timeout 관리를 한다.
+        if (!encoder.matches(request.getPassword(), member.getPassword())) {
+            timeoutService.checkFail(member);
         }
+
+        //비밀번호가 맞다면 정상 처리한다.
+        timeoutService.checkSuccess(member);
+        return new PasswordCheckResponse(true);
     }
 
     public MemberDetailResponse changeMyPassword(Long memberId, PasswordChangeRequest request) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(MemberNotFound::new);
-
-        if (!encoder.matches(request.getOldPassword(), member.getPassword())) {
-            throw new PasswordIncorrect();
-        }
 
         if (!request.getNewPassword().equals(request.getNewPasswordCheck())) {
             throw new PasswordICheckIncorrect();

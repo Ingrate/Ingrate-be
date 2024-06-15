@@ -2,6 +2,7 @@ package dompoo.Ingrate.member;
 
 import dompoo.Ingrate.config.security.UserPrincipal;
 import dompoo.Ingrate.member.dto.*;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,7 +18,7 @@ public class MemberController {
 
     //비회원 기능
     @PostMapping("/auth/signup")
-    public SignUpResponse signUp(@RequestBody SignUpRequest signUpRequest) {
+    public SignUpResponse signUp(@RequestBody @Valid SignUpRequest signUpRequest) {
         return memberService.signUp(signUpRequest);
     }
 
@@ -28,17 +29,17 @@ public class MemberController {
     }
 
     @PostMapping("/member")
-    public PasswordCheckResponse checkMyPassword(@AuthenticationPrincipal UserPrincipal principal, @RequestBody PasswordCheckRequest request) {
+    public PasswordCheckResponse checkMyPassword(@AuthenticationPrincipal UserPrincipal principal, @RequestBody @Valid PasswordCheckRequest request) {
         return memberService.checkMyPassword(principal.getMemberId(), request);
     }
 
     @PutMapping("/member")
-    public MemberDetailResponse changeMyPassword(@AuthenticationPrincipal UserPrincipal principal, @RequestBody PasswordChangeRequest request) {
+    public MemberDetailResponse changeMyPassword(@AuthenticationPrincipal UserPrincipal principal, @RequestBody @Valid PasswordChangeRequest request) {
         return memberService.changeMyPassword(principal.getMemberId(), request);
     }
 
     @DeleteMapping("/member")
-    public WithdrawalResponse withdrawal(@AuthenticationPrincipal UserPrincipal principal, @RequestBody PasswordCheckRequest request) {
+    public WithdrawalResponse withdrawal(@AuthenticationPrincipal UserPrincipal principal, @RequestBody @Valid PasswordCheckRequest request) {
         return memberService.withdrawal(principal.getMemberId(), request);
     }
 

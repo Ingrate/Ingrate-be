@@ -10,11 +10,13 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.session.security.web.authentication.SpringSessionRememberMeServices;
 
 @RequiredArgsConstructor
 public class JsonUsernamePasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final ObjectMapper objectMapper;
+    private final SpringSessionRememberMeServices rememberMeServices;
 
     @SneakyThrows
     @Override
@@ -26,6 +28,10 @@ public class JsonUsernamePasswordAuthenticationFilter extends UsernamePasswordAu
 
         setDetails(request, token);
 
+        //rememberMe 파라미터값을 기준으로 remember-me 할지 말지 결정
+        //true면 30일, false면 30분 저장
+        rememberMeServices.setAlwaysRemember(json.rememberMe);
+
         return this.getAuthenticationManager().authenticate(token);
     }
 
@@ -33,5 +39,6 @@ public class JsonUsernamePasswordAuthenticationFilter extends UsernamePasswordAu
     private static class UsernamePassword {
         private String username;
         private String password;
+        private boolean rememberMe;
     }
 }

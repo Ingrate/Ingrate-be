@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/ingrate
+    username: root
+    password: 1234
+  session:
+    jdbc:
+      initialize-schema: always
+
+

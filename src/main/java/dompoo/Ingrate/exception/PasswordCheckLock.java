@@ -2,13 +2,12 @@ package dompoo.Ingrate.exception;
 
 import dompoo.Ingrate.config.exception.MyException;
 
-public class AlreadyExistUsername extends MyException {
+public class PasswordCheckLock extends MyException {
 
-    private static final String MESSAGE = "이미 존재하는 사용자명입니다.";
     private static final String CODE = "400";
 
-    public AlreadyExistUsername() {
-        super(MESSAGE);
+    public PasswordCheckLock(Long timeout) {
+        super(timeout + "초 후 시도해주세요.");
     }
 
     @Override
