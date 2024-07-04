@@ -12,6 +12,7 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 public class IngredientDetailResponse {
 
+    private final Long id;
     private final String name;
     private final Float cost;
     private final Float amount;
@@ -20,6 +21,7 @@ public class IngredientDetailResponse {
     private final LocalDate date;
 
     public IngredientDetailResponse(Ingredient ingredient) {
+        this.id = ingredient.getId();
         this.name = ingredient.getName();
         this.cost = ingredient.getCost();
         this.amount = ingredient.getAmount();
