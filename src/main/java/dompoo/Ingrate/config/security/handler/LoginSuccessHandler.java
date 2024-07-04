@@ -33,6 +33,11 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         data.put("memberId", principal.getMemberId());
         String json = objectMapper.writeValueAsString(data);
 
+        // 세션 ID 가져오기
+        String sessionId = request.getSession().getId();
+        // Authorization 헤더에 세션 ID 설정
+        response.setHeader("Authorization", "Bearer " + sessionId);
+
         log.info("[인증 성공] 사용자명 : {}", principal.getUsername());
         response.setContentType(APPLICATION_JSON_VALUE);
         response.getWriter().write(json);
