@@ -4,9 +4,8 @@ import dompoo.Ingrate.auth.dto.LoginRequest;
 import dompoo.Ingrate.auth.dto.LoginResponse;
 import dompoo.Ingrate.config.security.JwtTokenUtil;
 import dompoo.Ingrate.exception.AlreadyExistUsername;
+import dompoo.Ingrate.exception.AuthenticationFail;
 import dompoo.Ingrate.exception.PasswordCheckIncorrect;
-import dompoo.Ingrate.exception.PasswordIncorrect;
-import dompoo.Ingrate.exception.UsernameNotFoundException;
 import dompoo.Ingrate.member.Member;
 import dompoo.Ingrate.member.MemberRepository;
 import dompoo.Ingrate.member.dto.SignUpRequest;
@@ -46,11 +45,11 @@ public class AuthService {
 
     public LoginResponse login(LoginRequest loginRequest) {
         Member member = memberRepository.findByUsername(loginRequest.getUsername())
-                .orElseThrow(() -> new UsernameNotFoundException(loginRequest.getUsername()));
+                .orElseThrow(AuthenticationFail::new);
 
         //비밀번호가 틀리면 예외 발생
         if (!encoder.matches(loginRequest.getPassword(), member.getPassword())) {
-            throw new PasswordIncorrect();
+            throw new AuthenticationFail();
         }
 
         String token = jwtTokenUtil.generateToken(member.getUsername(), loginRequest.getRememberme());
