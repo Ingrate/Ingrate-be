@@ -14,7 +14,6 @@ import dompoo.Ingrate.member.dto.SignUpResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +24,6 @@ import org.springframework.stereotype.Service;
 public class AuthService {
 
     private final JwtTokenUtil jwtTokenUtil;
-    private final AuthenticationManager authenticationManager;
     private final MemberRepository memberRepository;
     private final PasswordEncoder encoder;
 
