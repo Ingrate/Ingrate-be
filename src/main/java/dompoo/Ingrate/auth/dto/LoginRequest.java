@@ -17,16 +17,12 @@ public class LoginRequest {
     @NotEmpty(message = "비밀번호를 입력해주세요.")
     private String password;
 
-    private Boolean rememberme;
+    private Boolean rememberme = false;
 
     @Builder
     public LoginRequest(String username, String password, Boolean rememberme) {
         this.username = username;
         this.password = password;
-        if (rememberme == null) {
-            this.rememberme = false;
-        } else {
-            this.rememberme = rememberme;
-        }
+        if (rememberme != null) this.rememberme = rememberme;
     }
 }
