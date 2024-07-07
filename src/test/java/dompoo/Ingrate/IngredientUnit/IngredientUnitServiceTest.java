@@ -53,10 +53,13 @@ class IngredientUnitServiceTest {
         assertThat(response).hasSize(3);
         assertThat(response.get(0).getName()).isEqualTo("파");
         assertThat(response.get(0).getUnit()).isEqualTo("단");
+        assertThat(response.get(0).getEnumUnit()).isEqualTo("DAN");
         assertThat(response.get(1).getName()).isEqualTo("파");
         assertThat(response.get(1).getUnit()).isEqualTo("g");
+        assertThat(response.get(1).getEnumUnit()).isEqualTo("GRAM");
         assertThat(response.get(2).getName()).isEqualTo("양파");
         assertThat(response.get(2).getUnit()).isEqualTo("g");
+        assertThat(response.get(2).getEnumUnit()).isEqualTo("GRAM");
     }
 
     @Test
