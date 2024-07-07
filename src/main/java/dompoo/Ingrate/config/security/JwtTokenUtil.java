@@ -16,15 +16,21 @@ public class JwtTokenUtil {
 
     private final SecretKey key;
     private final long expiration;
+    private final long rememberMeExpiration;
 
-    public JwtTokenUtil(@Value("${jwt.secretKey}") String key, @Value("${jwt.expiration}") int expiration) {
+    public JwtTokenUtil(
+            @Value("${jwt.secretKey}") String key,
+            @Value("${jwt.expiration}") int expiration,
+            @Value("${jwt.remembermeExpiration}") int rememberMeExpiration
+    ) {
         this.key = Keys.hmacShaKeyFor(key.getBytes(StandardCharsets.UTF_8));
         this.expiration = expiration;
+        this.rememberMeExpiration = rememberMeExpiration;
     }
 
-    public String generateToken(String username) {
+    public String generateToken(String username, Boolean rememberme) {
         Date now = new Date();
-        Date expireDate = new Date(now.getTime() + expiration);
+        Date expireDate = rememberme ? new Date(now.getTime() + rememberMeExpiration) : new Date(now.getTime() + expiration);
 
         return Jwts.builder()
                 .subject(username)
