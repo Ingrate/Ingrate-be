@@ -1,11 +1,12 @@
 package dompoo.Ingrate.config.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dompoo.Ingrate.config.security.handler.*;
+import dompoo.Ingrate.config.security.handler.Http401Handler;
+import dompoo.Ingrate.config.security.handler.Http403Handler;
+import dompoo.Ingrate.config.security.handler.LogoutSuccessHandler;
 import dompoo.Ingrate.exception.UsernameNotFoundException;
 import dompoo.Ingrate.member.Member;
 import dompoo.Ingrate.member.MemberRepository;
-import dompoo.Ingrate.member.TimeoutService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,14 +17,13 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
-import org.springframework.session.security.web.authentication.SpringSessionRememberMeServices;
 
 import static org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN;
 
@@ -34,7 +34,6 @@ import static org.springframework.security.web.header.writers.frameoptions.XFram
 public class SecurityConfig {
 
     private final MemberRepository memberRepository;
-    private final TimeoutService timeoutService;
     private final ObjectMapper objectMapper;
 
     @Bean
@@ -48,34 +47,26 @@ public class SecurityConfig {
                         .requestMatchers("/ingredient/rate").permitAll()
                         .anyRequest().authenticated()
                 )
-                .csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .headers(headers -> headers.addHeaderWriter(new XFrameOptionsHeaderWriter(SAMEORIGIN)))
-                .addFilterAt(jsonUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(e -> e
                         .accessDeniedHandler(new Http403Handler(objectMapper))
                         .authenticationEntryPoint(new Http401Handler(objectMapper)))
                 .logout(logout -> logout
                         .logoutUrl("/auth/logout")
-                        .deleteCookies("SESSION")
+                        .deleteCookies("JSESSION")
                         .logoutSuccessHandler(new LogoutSuccessHandler(objectMapper))
                 )
+                .csrf(AbstractHttpConfigurer::disable)
+                .httpBasic(AbstractHttpConfigurer::disable)
+                .formLogin(AbstractHttpConfigurer::disable)
                 .build();
     }
 
     @Bean
-    public JsonUsernamePasswordAuthenticationFilter jsonUsernamePasswordAuthenticationFilter() {
-        SpringSessionRememberMeServices rememberMeServices = new SpringSessionRememberMeServices();
-
-        JsonUsernamePasswordAuthenticationFilter filter = new JsonUsernamePasswordAuthenticationFilter(objectMapper, rememberMeServices);
-        filter.setAuthenticationManager(authenticationManager());
-        filter.setFilterProcessesUrl("/auth/login");
-        filter.setAuthenticationFailureHandler(new LoginFailHandler(objectMapper, memberRepository, timeoutService));
-        filter.setAuthenticationSuccessHandler(new LoginSuccessHandler(objectMapper));
-        filter.setSecurityContextRepository(new HttpSessionSecurityContextRepository());
-
-        filter.setRememberMeServices(rememberMeServices);
-
-        return filter;
+    public JwtAuthFilter jwtAuthenticationFilter() {
+        return new JwtAuthFilter();
     }
 
     @Bean
