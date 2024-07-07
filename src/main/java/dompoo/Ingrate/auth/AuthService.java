@@ -48,16 +48,18 @@ public class AuthService {
         Member member = memberRepository.findByUsername(loginRequest.getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException(loginRequest.getUsername()));
 
-        //비밀번호가 틀리면
+        //비밀번호가 틀리면 예외 발생
         if (!encoder.matches(loginRequest.getPassword(), member.getPassword())) {
             throw new PasswordIncorrect();
         }
+
+        String token = jwtTokenUtil.generateToken(member.getUsername(), loginRequest.getRememberme());
 
         return LoginResponse
                 .builder()
                 .id(member.getId())
                 .username(member.getUsername())
-                .accessToken(jwtTokenUtil.generateToken(member.getUsername()))
+                .accessToken(token)
                 .build();
     }
 
