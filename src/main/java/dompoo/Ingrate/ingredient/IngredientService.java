@@ -51,7 +51,7 @@ public class IngredientService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(MemberNotFound::new);
 
-        if (!unitService.unitExistCheck(request.getName(), Unit.valueOf(request.getUnit()))) {
+        if (!unitService.unitExistCheck(request.getName(), Unit.valueOf(request.getEnumUnit()))) {
             throw new UnitNotFound();
         }
 
@@ -59,7 +59,7 @@ public class IngredientService {
                 .name(request.getName())
                 .cost(request.getCost())
                 .amount(request.getAmount())
-                .unit(Unit.valueOf(request.getUnit()))
+                .unit(Unit.valueOf(request.getEnumUnit()))
                 .memo(request.getMemo())
                 .date(LocalDate.now())
                 .member(member)
@@ -95,14 +95,14 @@ public class IngredientService {
             throw new NotMyIngredient();
         }
 
-        if (!unitService.unitExistCheck(request.getName(), Unit.valueOf(request.getUnit()))) {
+        if (!unitService.unitExistCheck(request.getName(), Unit.valueOf(request.getEnumUnit()))) {
             throw new UnitNotFound();
         }
 
         ingredient.setName(request.getName());
         ingredient.setCost(request.getCost());
         ingredient.setAmount(request.getAmount());
-        ingredient.setUnit(Unit.valueOf(request.getUnit()));
+        ingredient.setUnit(Unit.valueOf(request.getEnumUnit()));
         ingredient.setMemo(request.getMemo());
 
         return new IngredientDetailResponse(ingredient);
@@ -136,14 +136,14 @@ public class IngredientService {
         Ingredient ingredient = ingredientRepository.findById(ingredientId)
                 .orElseThrow(IngredientNotFound::new);
 
-        if (!unitService.unitExistCheck(request.getName(), Unit.valueOf(request.getUnit()))) {
+        if (!unitService.unitExistCheck(request.getName(), Unit.valueOf(request.getEnumUnit()))) {
             throw new UnitNotFound();
         }
 
         ingredient.setName(request.getName());
         ingredient.setCost(request.getCost());
         ingredient.setAmount(request.getAmount());
-        ingredient.setUnit(Unit.valueOf(request.getUnit()));
+        ingredient.setUnit(Unit.valueOf(request.getEnumUnit()));
         ingredient.setMemo(request.getMemo());
 
         return new IngredientAdminDetailResponse(ingredient);

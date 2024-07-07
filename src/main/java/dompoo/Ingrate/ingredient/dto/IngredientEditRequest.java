@@ -25,16 +25,16 @@ public class IngredientEditRequest {
     private Float amount;
 
     @NotEmpty(message = "단위를 입력해주세요.")
-    private String unit;
+    private String enumUnit;
 
     private String memo;
 
     @Builder
-    public IngredientEditRequest(String name, Float cost, Float amount, String unit, String memo) {
+    public IngredientEditRequest(String name, Float cost, Float amount, String enumUnit, String memo) {
         this.name = name;
         this.cost = cost;
         this.amount = amount;
-        this.unit = unit;
+        this.enumUnit = enumUnit;
         this.memo = memo;
     }
 }
