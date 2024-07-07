@@ -27,7 +27,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
                 .message(e.getMessage())
                 .build();
 
-        log.error("[비즈니스 오류{}] {}]", response.getCode(), response.getMessage());
+        log.error("[비즈니스 오류 {}] {}", response.getCode(), response.getMessage());
 
         return ResponseEntity
                 .status(Integer.parseInt(e.getCode()))
