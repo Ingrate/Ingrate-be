@@ -65,7 +65,7 @@ class IngredientControllerTest {
                 .name("파")
                 .cost(1300F)
                 .amount(1F)
-                .unit("DAN")
+                .enumUnit("DAN")
                 .build();
 
         String json = objectMapper.writeValueAsString(request);
@@ -86,7 +86,7 @@ class IngredientControllerTest {
                 .name("파")
                 .cost(1300F)
                 .amount(1F)
-                .unit("DAN")
+                .enumUnit("DAN")
                 .build();
 
         String json = objectMapper.writeValueAsString(request);
@@ -108,7 +108,7 @@ class IngredientControllerTest {
         IngredientAddRequest request = IngredientAddRequest.builder()
                 .cost(1300F)
                 .amount(1F)
-                .unit("DAN")
+                .enumUnit("DAN")
                 .build();
 
         String json = objectMapper.writeValueAsString(request);
@@ -131,7 +131,7 @@ class IngredientControllerTest {
         IngredientAddRequest request = IngredientAddRequest.builder()
                 .name("파")
                 .amount(1F)
-                .unit("DAN")
+                .enumUnit("DAN")
                 .build();
 
         String json = objectMapper.writeValueAsString(request);
@@ -154,7 +154,7 @@ class IngredientControllerTest {
         IngredientAddRequest request = IngredientAddRequest.builder()
                 .name("파")
                 .cost(1300F)
-                .unit("DAN")
+                .enumUnit("DAN")
                 .build();
 
         String json = objectMapper.writeValueAsString(request);
@@ -199,7 +199,7 @@ class IngredientControllerTest {
                 .name("파")
                 .cost(1300F)
                 .amount(1F)
-                .unit("MILILITER")
+                .enumUnit("MILILITER")
                 .build();
 
         String json = objectMapper.writeValueAsString(request);
@@ -394,7 +394,7 @@ class IngredientControllerTest {
                 .name("파")
                 .cost(1300F)
                 .amount(300F)
-                .unit("GRAM")
+                .enumUnit("GRAM")
                 .build();
 
         String json = objectMapper.writeValueAsString(request);
@@ -432,7 +432,7 @@ class IngredientControllerTest {
                 .name("파")
                 .cost(1300F)
                 .amount(300F)
-                .unit("GRAM")
+                .enumUnit("GRAM")
                 .build();
 
         String json = objectMapper.writeValueAsString(request);
@@ -466,7 +466,7 @@ class IngredientControllerTest {
                 .name("파")
                 .cost(1300F)
                 .amount(300F)
-                .unit("GRAM")
+                .enumUnit("GRAM")
                 .build();
 
         String json = objectMapper.writeValueAsString(request);
@@ -503,7 +503,7 @@ class IngredientControllerTest {
                 .name("파")
                 .cost(1300F)
                 .amount(300F)
-                .unit("GRAM")
+                .enumUnit("GRAM")
                 .build();
 
         String json = objectMapper.writeValueAsString(request);
@@ -536,7 +536,7 @@ class IngredientControllerTest {
         IngredientEditRequest request = IngredientEditRequest.builder()
                 .cost(1300F)
                 .amount(300F)
-                .unit("GRAM")
+                .enumUnit("GRAM")
                 .build();
 
         String json = objectMapper.writeValueAsString(request);
@@ -569,7 +569,7 @@ class IngredientControllerTest {
         IngredientEditRequest request = IngredientEditRequest.builder()
                 .name("파")
                 .amount(300F)
-                .unit("GRAM")
+                .enumUnit("GRAM")
                 .build();
 
         String json = objectMapper.writeValueAsString(request);
@@ -602,7 +602,7 @@ class IngredientControllerTest {
         IngredientEditRequest request = IngredientEditRequest.builder()
                 .name("파")
                 .cost(1300F)
-                .unit("GRAM")
+                .enumUnit("GRAM")
                 .build();
 
         String json = objectMapper.writeValueAsString(request);
@@ -939,7 +939,7 @@ class IngredientControllerTest {
                 .name("파")
                 .cost(1300F)
                 .amount(1F)
-                .unit("DAN")
+                .enumUnit("DAN")
                 .build();
 
         String json = objectMapper.writeValueAsString(request);
@@ -978,7 +978,7 @@ class IngredientControllerTest {
                 .name("파")
                 .cost(1300F)
                 .amount(1F)
-                .unit("DAN")
+                .enumUnit("DAN")
                 .build();
 
         String json = objectMapper.writeValueAsString(request);
@@ -1014,7 +1014,7 @@ class IngredientControllerTest {
                 .name("파")
                 .cost(1300F)
                 .amount(1F)
-                .unit("DAN")
+                .enumUnit("DAN")
                 .build();
 
         String json = objectMapper.writeValueAsString(request);
@@ -1051,7 +1051,7 @@ class IngredientControllerTest {
                 .name("파")
                 .cost(1300F)
                 .amount(1F)
-                .unit("DAN")
+                .enumUnit("DAN")
                 .build();
 
         String json = objectMapper.writeValueAsString(request);
@@ -1088,7 +1088,7 @@ class IngredientControllerTest {
                 .name("파")
                 .cost(1300F)
                 .amount(1F)
-                .unit("MILILITER")
+                .enumUnit("MILILITER")
                 .build();
 
         String json = objectMapper.writeValueAsString(request);
@@ -1124,7 +1124,7 @@ class IngredientControllerTest {
         IngredientEditRequest request = IngredientEditRequest.builder()
                 .cost(1300F)
                 .amount(1F)
-                .unit("DAN")
+                .enumUnit("DAN")
                 .build();
 
         String json = objectMapper.writeValueAsString(request);
@@ -1160,7 +1160,7 @@ class IngredientControllerTest {
         IngredientEditRequest request = IngredientEditRequest.builder()
                 .name("파")
                 .amount(1F)
-                .unit("DAN")
+                .enumUnit("DAN")
                 .build();
 
         String json = objectMapper.writeValueAsString(request);
@@ -1196,7 +1196,7 @@ class IngredientControllerTest {
         IngredientEditRequest request = IngredientEditRequest.builder()
                 .name("파")
                 .cost(1300F)
-                .unit("DAN")
+                .enumUnit("DAN")
                 .build();
 
         String json = objectMapper.writeValueAsString(request);

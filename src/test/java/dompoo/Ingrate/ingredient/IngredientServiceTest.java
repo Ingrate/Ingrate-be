@@ -72,7 +72,7 @@ class IngredientServiceTest {
                 .name("파")
                 .cost(1200F)
                 .amount(1F)
-                .unit("DAN")
+                .enumUnit("DAN")
                 .memo("GS더프레시")
                 .build();
 
@@ -97,7 +97,7 @@ class IngredientServiceTest {
                 .name("파")
                 .cost(1200F)
                 .amount(1F)
-                .unit("DAN")
+                .enumUnit("DAN")
                 .memo("GS더프레시")
                 .build();
 
@@ -115,7 +115,7 @@ class IngredientServiceTest {
                 .name("파")
                 .cost(1200F)
                 .amount(1F)
-                .unit("MILILITER")
+                .enumUnit("MILILITER")
                 .memo("GS더프레시")
                 .build();
 
@@ -256,7 +256,7 @@ class IngredientServiceTest {
                 .name("파")
                 .cost(1300F)
                 .amount(300F)
-                .unit("GRAM")
+                .enumUnit("GRAM")
                 .memo("쿠팡")
                 .build();
 
@@ -295,7 +295,7 @@ class IngredientServiceTest {
                 .name("파")
                 .cost(1300F)
                 .amount(300F)
-                .unit("GRAM")
+                .enumUnit("GRAM")
                 .memo("쿠팡")
                 .build();
 
@@ -322,7 +322,7 @@ class IngredientServiceTest {
                 .name("파")
                 .cost(1300F)
                 .amount(300F)
-                .unit("GRAM")
+                .enumUnit("GRAM")
                 .memo("쿠팡")
                 .build();
 
@@ -349,7 +349,7 @@ class IngredientServiceTest {
                 .name("파")
                 .cost(1300F)
                 .amount(300F)
-                .unit("MILILITER")
+                .enumUnit("MILILITER")
                 .memo("쿠팡")
                 .build();
 
@@ -538,7 +538,7 @@ class IngredientServiceTest {
                 .name("파")
                 .cost(1300F)
                 .amount(300F)
-                .unit("GRAM")
+                .enumUnit("GRAM")
                 .memo("쿠팡")
                 .build();
 
@@ -579,7 +579,7 @@ class IngredientServiceTest {
                 .name("파")
                 .cost(1300F)
                 .amount(300F)
-                .unit("GRAM")
+                .enumUnit("GRAM")
                 .memo("쿠팡")
                 .build();
 
@@ -607,7 +607,7 @@ class IngredientServiceTest {
                 .name("파")
                 .cost(1300F)
                 .amount(300F)
-                .unit("MILILITER")
+                .enumUnit("MILILITER")
                 .memo("쿠팡")
                 .build();
 
