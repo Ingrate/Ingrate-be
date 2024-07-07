@@ -2,7 +2,7 @@ spring:
   application:
     name: Ingrate
   profiles:
-    include: db
+    include: db, secret
     active: local
   jpa:
     show-sql: true

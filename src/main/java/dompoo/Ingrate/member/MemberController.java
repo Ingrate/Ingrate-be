@@ -16,12 +16,6 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    //비회원 기능
-    @PostMapping("/auth/signup")
-    public SignUpResponse signUp(@RequestBody @Valid SignUpRequest signUpRequest) {
-        return memberService.signUp(signUpRequest);
-    }
-
     //회원 기능
     @GetMapping("/member")
     public MemberDetailResponse getMyInfo(@AuthenticationPrincipal UserPrincipal principal) {

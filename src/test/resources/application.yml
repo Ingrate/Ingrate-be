@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    include: secret
   datasource:
     url: jdbc:h2:mem:ingrate;MODE=MySQL
     username: sa
@@ -7,6 +9,5 @@ spring:
 
   jpa:
     defer-datasource-initialization: true
-    database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: create-drop
