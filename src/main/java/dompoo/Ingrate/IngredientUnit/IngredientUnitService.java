@@ -19,7 +19,7 @@ public class IngredientUnitService {
 
     public List<UnitResponse> getUnitList() {
         return ingredientUnitRepository.findAll().stream()
-                .map(unit -> new UnitResponse(unit.getName(), unit.getUnit().getName()))
+                .map(unit -> new UnitResponse(unit.getName(), unit.getUnit().getName(), unit.getUnit().toString()))
                 .toList();
     }
 
@@ -37,6 +37,6 @@ public class IngredientUnitService {
                 .unit(Unit.valueOf(request.getUnit()))
                 .build());
 
-        return new UnitResponse(savedUnit.getName(), savedUnit.getUnit().getName());
+        return new UnitResponse(savedUnit.getName(), savedUnit.getUnit().getName(), savedUnit.getUnit().toString());
     }
 }

@@ -56,8 +56,10 @@ class IngredientUnitControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].name").value("파"))
                 .andExpect(jsonPath("$[0].unit").value("g"))
+                .andExpect(jsonPath("$[0].enumUnit").value("GRAM"))
                 .andExpect(jsonPath("$[1].name").value("파"))
                 .andExpect(jsonPath("$[1].unit").value("단"))
+                .andExpect(jsonPath("$[1].enumUnit").value("DAN"))
                 .andDo(print());
     }
 
