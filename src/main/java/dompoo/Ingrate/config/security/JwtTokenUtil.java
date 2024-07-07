@@ -20,8 +20,8 @@ public class JwtTokenUtil {
 
     public JwtTokenUtil(
             @Value("${jwt.secretKey}") String key,
-            @Value("${jwt.expiration}") int expiration,
-            @Value("${jwt.remembermeExpiration}") int rememberMeExpiration
+            @Value("${jwt.expiration}") long expiration,
+            @Value("${jwt.remembermeExpiration}") long rememberMeExpiration
     ) {
         this.key = Keys.hmacShaKeyFor(key.getBytes(StandardCharsets.UTF_8));
         this.expiration = expiration;
