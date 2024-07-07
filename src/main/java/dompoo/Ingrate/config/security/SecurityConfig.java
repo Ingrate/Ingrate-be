@@ -3,7 +3,6 @@ package dompoo.Ingrate.config.security;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dompoo.Ingrate.config.security.handler.Http401Handler;
 import dompoo.Ingrate.config.security.handler.Http403Handler;
-import dompoo.Ingrate.config.security.handler.LogoutSuccessHandler;
 import dompoo.Ingrate.exception.UsernameNotFoundException;
 import dompoo.Ingrate.member.Member;
 import dompoo.Ingrate.member.MemberRepository;
@@ -53,11 +52,6 @@ public class SecurityConfig {
                 .exceptionHandling(e -> e
                         .accessDeniedHandler(new Http403Handler(objectMapper))
                         .authenticationEntryPoint(new Http401Handler(objectMapper)))
-                .logout(logout -> logout
-                        .logoutUrl("/auth/logout")
-                        .deleteCookies("JSESSION")
-                        .logoutSuccessHandler(new LogoutSuccessHandler(objectMapper))
-                )
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
