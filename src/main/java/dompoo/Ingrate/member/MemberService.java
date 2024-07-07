@@ -1,8 +1,7 @@
 package dompoo.Ingrate.member;
 
-import dompoo.Ingrate.exception.AlreadyExistUsername;
 import dompoo.Ingrate.exception.MemberNotFound;
-import dompoo.Ingrate.exception.PasswordICheckIncorrect;
+import dompoo.Ingrate.exception.PasswordCheckIncorrect;
 import dompoo.Ingrate.member.dto.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -19,23 +18,6 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final TimeoutService timeoutService;
     private final PasswordEncoder encoder;
-
-    public SignUpResponse signUp(SignUpRequest signUpRequest) {
-        if (memberRepository.existsByUsername(signUpRequest.getUsername())) {
-            throw new AlreadyExistUsername();
-        }
-
-        if (!signUpRequest.getPassword().equals(signUpRequest.getPasswordCheck())) {
-            throw new PasswordICheckIncorrect();
-        }
-
-        Member member = memberRepository.save(Member.builder()
-                .username(signUpRequest.getUsername())
-                .password(encoder.encode(signUpRequest.getPassword()))
-                .build());
-
-        return new SignUpResponse(member);
-    }
 
     public MemberDetailResponse getMyInfo(Long memberId) {
         Member member = memberRepository.findById(memberId)
@@ -63,7 +45,7 @@ public class MemberService {
                 .orElseThrow(MemberNotFound::new);
 
         if (!request.getNewPassword().equals(request.getNewPasswordCheck())) {
-            throw new PasswordICheckIncorrect();
+            throw new PasswordCheckIncorrect();
         }
 
         member.setPassword(encoder.encode(request.getNewPassword()));
