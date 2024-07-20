@@ -30,7 +30,6 @@ public class Ingredient {
     @Column(nullable = false)
     private Unit unit;
     
-    @Column(nullable = false)
     private String memo;
     
     @Column(nullable = false)
