@@ -1,14 +1,21 @@
 package dompoo.Ingrate.ingredient;
 
-import dompoo.Ingrate.IngredientUnit.IngredientUnit;
-import dompoo.Ingrate.IngredientUnit.IngredientUnitRepository;
-import dompoo.Ingrate.exception.IngredientNotFound;
-import dompoo.Ingrate.exception.MemberNotFound;
-import dompoo.Ingrate.exception.NotMyIngredient;
-import dompoo.Ingrate.exception.UnitNotFound;
-import dompoo.Ingrate.ingredient.dto.*;
-import dompoo.Ingrate.member.Member;
-import dompoo.Ingrate.member.MemberRepository;
+import dompoo.Ingrate.api.request.IngredientAddRequest;
+import dompoo.Ingrate.api.request.IngredientEditRequest;
+import dompoo.Ingrate.api.response.IngredientAdminDetailResponse;
+import dompoo.Ingrate.api.response.IngredientDetailResponse;
+import dompoo.Ingrate.api.response.IngredientResponse;
+import dompoo.Ingrate.domain.IngredientUnit;
+import dompoo.Ingrate.service.repository.IngredientRepository;
+import dompoo.Ingrate.service.repository.IngredientUnitRepository;
+import dompoo.Ingrate.domain.Ingredient;
+import dompoo.Ingrate.api.exception.IngredientNotFound;
+import dompoo.Ingrate.api.exception.MemberNotFound;
+import dompoo.Ingrate.api.exception.NotMyIngredient;
+import dompoo.Ingrate.api.exception.UnitNotFound;
+import dompoo.Ingrate.domain.Member;
+import dompoo.Ingrate.service.repository.MemberRepository;
+import dompoo.Ingrate.service.IngredientService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,8 +26,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
-import static dompoo.Ingrate.config.enums.Unit.DAN;
-import static dompoo.Ingrate.config.enums.Unit.GRAM;
+import static dompoo.Ingrate.domain.enums.Unit.DAN;
+import static dompoo.Ingrate.domain.enums.Unit.GRAM;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 

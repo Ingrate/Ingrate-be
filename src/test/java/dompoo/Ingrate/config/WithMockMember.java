@@ -1,11 +1,11 @@
 package dompoo.Ingrate.config;
 
-import dompoo.Ingrate.config.enums.Role;
+import dompoo.Ingrate.domain.enums.Role;
 import org.springframework.security.test.context.support.WithSecurityContext;
 
 import java.lang.annotation.*;
 
-import static dompoo.Ingrate.config.enums.Role.MEMBER;
+import static dompoo.Ingrate.domain.enums.Role.MEMBER;
 
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)

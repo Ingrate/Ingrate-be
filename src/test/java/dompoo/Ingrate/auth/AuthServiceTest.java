@@ -1,14 +1,15 @@
 package dompoo.Ingrate.auth;
 
-import dompoo.Ingrate.auth.dto.LoginRequest;
-import dompoo.Ingrate.auth.dto.LoginResponse;
-import dompoo.Ingrate.exception.AlreadyExistUsername;
-import dompoo.Ingrate.exception.AuthenticationFail;
-import dompoo.Ingrate.exception.PasswordCheckIncorrect;
-import dompoo.Ingrate.member.Member;
-import dompoo.Ingrate.member.MemberRepository;
-import dompoo.Ingrate.member.dto.SignUpRequest;
-import dompoo.Ingrate.member.dto.SignUpResponse;
+import dompoo.Ingrate.api.request.LoginRequest;
+import dompoo.Ingrate.api.response.LoginResponse;
+import dompoo.Ingrate.api.exception.AlreadyExistUsername;
+import dompoo.Ingrate.api.exception.AuthenticationFail;
+import dompoo.Ingrate.api.exception.PasswordCheckIncorrect;
+import dompoo.Ingrate.domain.Member;
+import dompoo.Ingrate.service.repository.MemberRepository;
+import dompoo.Ingrate.api.request.SignUpRequest;
+import dompoo.Ingrate.api.response.SignUpResponse;
+import dompoo.Ingrate.service.AuthService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
@@ -24,7 +25,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @Transactional
 class AuthServiceTest {
 
-    @Autowired AuthService authService;
+    @Autowired
+    AuthService authService;
     @Autowired MemberRepository memberRepository;
     @Autowired PasswordEncoder encoder;
 

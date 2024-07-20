@@ -1,7 +1,7 @@
 package dompoo.Ingrate;
 
-import dompoo.Ingrate.IngredientUnit.IngredientUnit;
-import dompoo.Ingrate.IngredientUnit.IngredientUnitRepository;
+import dompoo.Ingrate.domain.IngredientUnit;
+import dompoo.Ingrate.service.repository.IngredientUnitRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-import static dompoo.Ingrate.config.enums.Unit.*;
+import static dompoo.Ingrate.domain.enums.Unit.*;
 
 @Component
 @Profile("local")

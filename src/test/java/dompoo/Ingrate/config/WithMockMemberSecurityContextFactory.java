@@ -1,8 +1,8 @@
 package dompoo.Ingrate.config;
 
 import dompoo.Ingrate.config.security.UserPrincipal;
-import dompoo.Ingrate.member.Member;
-import dompoo.Ingrate.member.MemberRepository;
+import dompoo.Ingrate.domain.Member;
+import dompoo.Ingrate.service.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

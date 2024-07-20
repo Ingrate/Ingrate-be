@@ -1,9 +1,11 @@
 package dompoo.Ingrate.IngredientUnit;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dompoo.Ingrate.IngredientUnit.dto.UnitAddRequest;
+import dompoo.Ingrate.api.request.UnitAddRequest;
 import dompoo.Ingrate.config.WithMockMember;
-import dompoo.Ingrate.config.enums.Role;
+import dompoo.Ingrate.domain.enums.Role;
+import dompoo.Ingrate.domain.IngredientUnit;
+import dompoo.Ingrate.service.repository.IngredientUnitRepository;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
@@ -13,8 +15,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static dompoo.Ingrate.config.enums.Unit.DAN;
-import static dompoo.Ingrate.config.enums.Unit.GRAM;
+import static dompoo.Ingrate.domain.enums.Unit.DAN;
+import static dompoo.Ingrate.domain.enums.Unit.GRAM;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
