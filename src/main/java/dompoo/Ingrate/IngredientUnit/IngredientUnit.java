@@ -1,10 +1,7 @@
 package dompoo.Ingrate.IngredientUnit;
 
 import dompoo.Ingrate.config.enums.Unit;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
@@ -16,11 +13,16 @@ public class IngredientUnit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
+    @Column(nullable = false)
     private String name;
+    
+    @Enumerated(value = EnumType.STRING)
+    @Column(nullable = false)
     private Unit unit;
 
     @Builder
-    public IngredientUnit(Long id, String name, Unit unit) {
+    public IngredientUnit(String name, Unit unit) {
         this.name = name;
         this.unit = unit;
     }

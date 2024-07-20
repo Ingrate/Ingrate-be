@@ -20,13 +20,26 @@ public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
+    @Column(unique = true, nullable = false)
     private String username;
+    
+    @Column(nullable = false)
     private String password;
+    
+    @Column(nullable = false)
     private Integer posts;
+    
+    @Column(nullable = false)
     private Integer point;
+    
+    @Enumerated(value = EnumType.STRING)
     private Role role;
-
+    
+    @Column(nullable = false)
     private Integer failedAttempts;
+    
+    @Column(nullable = false)
     private LocalDateTime lockTime;
 
     @OneToMany(mappedBy = "member")
