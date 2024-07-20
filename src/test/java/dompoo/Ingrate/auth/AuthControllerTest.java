@@ -1,10 +1,10 @@
 package dompoo.Ingrate.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dompoo.Ingrate.auth.dto.LoginRequest;
-import dompoo.Ingrate.member.Member;
-import dompoo.Ingrate.member.MemberRepository;
-import dompoo.Ingrate.member.dto.SignUpRequest;
+import dompoo.Ingrate.api.request.LoginRequest;
+import dompoo.Ingrate.domain.Member;
+import dompoo.Ingrate.service.repository.MemberRepository;
+import dompoo.Ingrate.api.request.SignUpRequest;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;

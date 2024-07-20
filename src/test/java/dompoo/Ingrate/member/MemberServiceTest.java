@@ -1,10 +1,15 @@
 package dompoo.Ingrate.member;
 
-import dompoo.Ingrate.exception.MemberNotFound;
-import dompoo.Ingrate.exception.PasswordCheckFail;
-import dompoo.Ingrate.exception.PasswordCheckIncorrect;
-import dompoo.Ingrate.exception.PasswordCheckLock;
-import dompoo.Ingrate.member.dto.*;
+import dompoo.Ingrate.api.request.PasswordChangeRequest;
+import dompoo.Ingrate.api.request.PasswordCheckRequest;
+import dompoo.Ingrate.api.response.*;
+import dompoo.Ingrate.domain.Member;
+import dompoo.Ingrate.api.exception.MemberNotFound;
+import dompoo.Ingrate.api.exception.PasswordCheckFail;
+import dompoo.Ingrate.api.exception.PasswordCheckIncorrect;
+import dompoo.Ingrate.api.exception.PasswordCheckLock;
+import dompoo.Ingrate.service.MemberService;
+import dompoo.Ingrate.service.repository.MemberRepository;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
@@ -22,8 +27,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @Transactional
 class MemberServiceTest {
 
-    @Autowired MemberService service;
-    @Autowired MemberRepository repository;
+    @Autowired
+    MemberService service;
+    @Autowired
+    MemberRepository repository;
     @Autowired PasswordEncoder encoder;
 
     @AfterEach

@@ -1,13 +1,15 @@
 package dompoo.Ingrate.ingredient;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dompoo.Ingrate.IngredientUnit.IngredientUnit;
-import dompoo.Ingrate.IngredientUnit.IngredientUnitRepository;
+import dompoo.Ingrate.domain.IngredientUnit;
+import dompoo.Ingrate.service.repository.IngredientRepository;
+import dompoo.Ingrate.service.repository.IngredientUnitRepository;
 import dompoo.Ingrate.config.WithMockMember;
-import dompoo.Ingrate.ingredient.dto.IngredientAddRequest;
-import dompoo.Ingrate.ingredient.dto.IngredientEditRequest;
-import dompoo.Ingrate.member.Member;
-import dompoo.Ingrate.member.MemberRepository;
+import dompoo.Ingrate.domain.Ingredient;
+import dompoo.Ingrate.api.request.IngredientAddRequest;
+import dompoo.Ingrate.api.request.IngredientEditRequest;
+import dompoo.Ingrate.domain.Member;
+import dompoo.Ingrate.service.repository.MemberRepository;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,9 +20,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static dompoo.Ingrate.config.enums.Role.ADMIN;
-import static dompoo.Ingrate.config.enums.Unit.DAN;
-import static dompoo.Ingrate.config.enums.Unit.GRAM;
+import static dompoo.Ingrate.domain.enums.Role.ADMIN;
+import static dompoo.Ingrate.domain.enums.Unit.DAN;
+import static dompoo.Ingrate.domain.enums.Unit.GRAM;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;

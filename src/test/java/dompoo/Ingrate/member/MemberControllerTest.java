@@ -2,8 +2,10 @@ package dompoo.Ingrate.member;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dompoo.Ingrate.config.WithMockMember;
-import dompoo.Ingrate.member.dto.PasswordChangeRequest;
-import dompoo.Ingrate.member.dto.PasswordCheckRequest;
+import dompoo.Ingrate.domain.Member;
+import dompoo.Ingrate.api.request.PasswordChangeRequest;
+import dompoo.Ingrate.api.request.PasswordCheckRequest;
+import dompoo.Ingrate.service.repository.MemberRepository;
 import jakarta.transaction.Transactional;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.AfterEach;
@@ -14,7 +16,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static dompoo.Ingrate.config.enums.Role.ADMIN;
+import static dompoo.Ingrate.domain.enums.Role.ADMIN;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;

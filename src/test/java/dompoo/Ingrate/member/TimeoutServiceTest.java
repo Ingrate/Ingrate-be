@@ -1,7 +1,10 @@
 package dompoo.Ingrate.member;
 
-import dompoo.Ingrate.exception.PasswordCheckFail;
-import dompoo.Ingrate.exception.PasswordCheckLock;
+import dompoo.Ingrate.domain.Member;
+import dompoo.Ingrate.api.exception.PasswordCheckFail;
+import dompoo.Ingrate.api.exception.PasswordCheckLock;
+import dompoo.Ingrate.service.TimeoutService;
+import dompoo.Ingrate.service.repository.MemberRepository;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
@@ -16,8 +19,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @Transactional
 class TimeoutServiceTest {
 
-    @Autowired TimeoutService timeoutService;
-    @Autowired MemberRepository memberRepository;
+    @Autowired
+    TimeoutService timeoutService;
+    @Autowired
+    MemberRepository memberRepository;
 
     @AfterEach
     void setUp() {

@@ -1,8 +1,11 @@
 package dompoo.Ingrate.IngredientUnit;
 
-import dompoo.Ingrate.IngredientUnit.dto.UnitAddRequest;
-import dompoo.Ingrate.IngredientUnit.dto.UnitResponse;
-import dompoo.Ingrate.exception.AlreadyExistUnit;
+import dompoo.Ingrate.api.request.UnitAddRequest;
+import dompoo.Ingrate.api.response.UnitResponse;
+import dompoo.Ingrate.domain.IngredientUnit;
+import dompoo.Ingrate.api.exception.AlreadyExistUnit;
+import dompoo.Ingrate.service.IngredientUnitService;
+import dompoo.Ingrate.service.repository.IngredientUnitRepository;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
@@ -12,8 +15,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
-import static dompoo.Ingrate.config.enums.Unit.DAN;
-import static dompoo.Ingrate.config.enums.Unit.GRAM;
+import static dompoo.Ingrate.domain.enums.Unit.DAN;
+import static dompoo.Ingrate.domain.enums.Unit.GRAM;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
