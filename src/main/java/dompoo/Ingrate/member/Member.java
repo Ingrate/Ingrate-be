@@ -56,11 +56,8 @@ public class Member {
         this.lockTime = LocalDateTime.now();
     }
 
-    public void addPost(Integer num) {
+    public void addPostAndPoint(int num) {
         this.posts += num;
-    }
-
-    public void addPoint(Integer num) {
         this.point += num;
     }
 
