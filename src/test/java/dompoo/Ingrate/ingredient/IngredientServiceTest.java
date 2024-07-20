@@ -17,7 +17,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import static dompoo.Ingrate.config.enums.Unit.DAN;
@@ -135,7 +134,6 @@ class IngredientServiceTest {
                 .amount(1F)
                 .unit(DAN)
                 .memo("GS더프레시")
-                .date(LocalDate.now())
                 .member(me)
                 .build());
 
@@ -145,7 +143,6 @@ class IngredientServiceTest {
                 .amount(300F)
                 .unit(GRAM)
                 .memo("쿠팡")
-                .date(LocalDate.now())
                 .member(me)
                 .build());
 
@@ -155,7 +152,6 @@ class IngredientServiceTest {
                 .amount(300F)
                 .unit(GRAM)
                 .memo("컬리")
-                .date(LocalDate.now())
                 .member(other)
                 .build());
 
@@ -184,7 +180,6 @@ class IngredientServiceTest {
                 .amount(1F)
                 .unit(DAN)
                 .memo("GS더프레시")
-                .date(LocalDate.now())
                 .member(me)
                 .build());
 
@@ -209,7 +204,6 @@ class IngredientServiceTest {
                 .amount(1F)
                 .unit(DAN)
                 .memo("GS더프레시")
-                .date(LocalDate.now())
                 .member(me)
                 .build());
 
@@ -228,7 +222,6 @@ class IngredientServiceTest {
                 .amount(1F)
                 .unit(DAN)
                 .memo("GS더프레시")
-                .date(LocalDate.now())
                 .member(other)
                 .build());
 
@@ -248,7 +241,6 @@ class IngredientServiceTest {
                 .amount(1F)
                 .unit(DAN)
                 .memo("GS더프레시")
-                .date(LocalDate.now())
                 .member(me)
                 .build());
 
@@ -287,7 +279,6 @@ class IngredientServiceTest {
                 .amount(1F)
                 .unit(DAN)
                 .memo("GS더프레시")
-                .date(LocalDate.now())
                 .member(me)
                 .build());
 
@@ -314,7 +305,6 @@ class IngredientServiceTest {
                 .amount(1F)
                 .unit(DAN)
                 .memo("GS더프레시")
-                .date(LocalDate.now())
                 .member(other)
                 .build());
 
@@ -341,7 +331,6 @@ class IngredientServiceTest {
                 .amount(1F)
                 .unit(DAN)
                 .memo("GS더프레시")
-                .date(LocalDate.now())
                 .member(me)
                 .build());
 
@@ -369,7 +358,6 @@ class IngredientServiceTest {
                 .amount(1F)
                 .unit(DAN)
                 .memo("GS더프레시")
-                .date(LocalDate.now())
                 .member(me)
                 .build());
 
@@ -390,7 +378,6 @@ class IngredientServiceTest {
                 .amount(1F)
                 .unit(DAN)
                 .memo("GS더프레시")
-                .date(LocalDate.now())
                 .member(me)
                 .build());
 
@@ -410,7 +397,6 @@ class IngredientServiceTest {
                 .amount(1F)
                 .unit(DAN)
                 .memo("GS더프레시")
-                .date(LocalDate.now())
                 .member(other)
                 .build());
 
@@ -430,7 +416,6 @@ class IngredientServiceTest {
                 .amount(1F)
                 .unit(DAN)
                 .memo("GS더프레시")
-                .date(LocalDate.now())
                 .member(me)
                 .build());
 
@@ -440,7 +425,6 @@ class IngredientServiceTest {
                 .amount(300F)
                 .unit(GRAM)
                 .memo("쿠팡")
-                .date(LocalDate.now())
                 .member(me)
                 .build());
 
@@ -450,7 +434,6 @@ class IngredientServiceTest {
                 .amount(300F)
                 .unit(GRAM)
                 .memo("컬리")
-                .date(LocalDate.now())
                 .member(other)
                 .build());
 
@@ -483,7 +466,6 @@ class IngredientServiceTest {
                 .amount(1F)
                 .unit(DAN)
                 .memo("GS더프레시")
-                .date(LocalDate.now())
                 .member(other)
                 .build());
 
@@ -510,7 +492,6 @@ class IngredientServiceTest {
                 .amount(1F)
                 .unit(DAN)
                 .memo("GS더프레시")
-                .date(LocalDate.now())
                 .member(other)
                 .build());
 
@@ -530,7 +511,6 @@ class IngredientServiceTest {
                 .amount(1F)
                 .unit(DAN)
                 .memo("GS더프레시")
-                .date(LocalDate.now())
                 .member(other)
                 .build());
 
@@ -571,7 +551,6 @@ class IngredientServiceTest {
                 .amount(1F)
                 .unit(DAN)
                 .memo("GS더프레시")
-                .date(LocalDate.now())
                 .member(other)
                 .build());
 
@@ -599,7 +578,6 @@ class IngredientServiceTest {
                 .amount(1F)
                 .unit(DAN)
                 .memo("GS더프레시")
-                .date(LocalDate.now())
                 .member(other)
                 .build());
 
@@ -627,7 +605,6 @@ class IngredientServiceTest {
                 .amount(1F)
                 .unit(DAN)
                 .memo("GS더프레시")
-                .date(LocalDate.now())
                 .member(other)
                 .build());
 
@@ -648,7 +625,6 @@ class IngredientServiceTest {
                 .amount(1F)
                 .unit(DAN)
                 .memo("GS더프레시")
-                .date(LocalDate.now())
                 .member(other)
                 .build());
 
