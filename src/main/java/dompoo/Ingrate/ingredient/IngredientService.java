@@ -13,7 +13,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -55,18 +54,16 @@ public class IngredientService {
             throw new UnitNotFound();
         }
 
-        Ingredient ingredient = ingredientRepository.save(Ingredient.builder()
+        ingredientRepository.save(Ingredient.builder()
                 .name(request.getName())
                 .cost(request.getCost())
                 .amount(request.getAmount())
                 .unit(Unit.valueOf(request.getEnumUnit()))
                 .memo(request.getMemo())
-                .date(LocalDate.now())
                 .member(member)
                 .build());
 
-        member.addPost(1);
-        member.addPoint(1);
+        member.addPostAndPoint(1);
     }
 
     public List<IngredientResponse> getMyIngredient(Long memberId) {
